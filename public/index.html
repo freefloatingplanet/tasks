@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Title</title>
+    <link rel="stylesheet" href="css/jkanban.css" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Lato"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/myjkanban.css" />
+    <link rel="stylesheet" href="css/mytab.css" />
+
+    <script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
+    <script src="https://jsuites.net/v4/jsuites.js"></script>
+    <link rel="stylesheet" href="https://jsuites.net/v4/jsuites.css" type="text/css" />
+    <link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jexcel.css" type="text/css" />
+
+
+  </head>
+  <body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+    integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+    crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+    <script src="js/comliteral.js"></script>
+    <script src="js/tab.js"></script>
+
+    <input type="hidden" id="jsondata"></input>
+    
+    <div class="tab-area">
+      <div id=tab1 class="tab active">
+        タブ１
+      </div>
+      <div id=tab2 class="tab">
+        タブ２
+      </div>
+    </div>
+    <div class="content-area">
+      <div class="content show">
+        <textarea name="memodata" rows="10" cols="150"></textarea>
+        <br>
+        <div id="spreadsheet"></div>
+        <script src="js/taskchute.js"></script>
+      </div>
+      <div class="content">
+        <div id="myKanban"></div>    
+        <script src="js/jkanban.js"></script>
+        <script src="js/myjkanban.js"></script>
+    
+      </div>
+    </div>
+
+  </body>
+</html>

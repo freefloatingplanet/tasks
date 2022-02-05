@@ -1,0 +1,31 @@
+.tab-area {
+    display: flex;
+    justify-content: space-around;
+    background-color: #222e3e;
+    cursor: pointer;
+}
+.tab-area .tab {
+    width: 300px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    color: white;
+    border-right: 1px solid #50637b;
+    border-left: 1px solid #222e3e;
+}
+.tab-area .tab.active {
+    background-color: #ccc;
+    color: #222e3e;
+    border: none;
+}
+.content-area {
+    font-size: 15px;
+}
+.content-area .content{
+    display: none;
+}
+
+.content-area .content.show {
+    margin-top: 50px;
+    display: block;
+}
