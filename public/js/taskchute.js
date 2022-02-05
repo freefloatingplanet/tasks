@@ -60,56 +60,27 @@ var sortbyid = function(){
   table.orderBy(CONST.CELL_NO.ID,true);
 }
 
-var taskchute_tab1_event = function(){
-    table.setData({});
-    table.setData(mergeddata);
+var taskchute_initdata = function(){
+  table.setData({});
+  table.setData(convKeyCellNo(mergeddata));
+}
+
+var taskchute_tabtask_event = function(){
+  taskchute_initdata();
 };
 
 
-var taskchute_tab2_event = function(){
+var taskchute_tabkanban_event = function(){
     var headers = table.getHeaders().split(',');
     var datum = table.getData(false);
-    newdata = [];
-    waitdata = [];
-    workdata = [];
-    donedata = [];
+    mergeddata = [];
     datum.forEach(function(data){
         var json = {};
         for(var i=0; i<data.length; i++){
             json[headers[i]]=data[i];
         }
-        switch(data[CONST.CELL_NO.STATUS]){
-            case "new":
-                newdata.push(json);
-                break;
-            case "waiting":
-                waitdata.push(json);
-                break;
-            case "working":
-                workdata.push(json);
-                break;
-            case "done":
-                donedata.push(json);
-                break;
-            default:
-                break;
-        }
+        mergeddata.push(json);
     });
-}
-
-var readCSV = function(){
-  $.ajax({
-    type: "post",
-    url:"/csvread/",
-    dataType:"json"
-  }).done((data => {
-    console.log(data);
-    mergeddata = data;
-    table.setData({});
-    table.setData(mergeddata);
-  })).fail((data) => {
-    console.log('cannot access url');
-  })
 }
 
 var table = "";
@@ -138,5 +109,4 @@ var table = "";
      oneditionend : editionend,
      oninsertrow : insertrow,
     });
-  readCSV();
 }());

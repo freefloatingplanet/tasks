@@ -107,83 +107,92 @@ var KanbanTest = new jKanban({
   }
 
 
-  var myjkanban_tab2_event = function(){
-    KanbanTest.removeBoard("_new");
+  var myjkanban_tabkanban_event = function(){
+    KanbanTest.removeBoard(CONST.BOARDID.NEW);
     KanbanTest.addBoards([
         {
-            id: "_new",
+            id: CONST.BOARDID.NEW,
             title: "New",
             class: "info,good",
             item: []
         }
       ]);
-    newdata.forEach(function(json){
-        KanbanTest.addElement("_new",json);
+    mergeddata.forEach(function(json){
+        if(json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.NEW){
+          KanbanTest.addElement(CONST.BOARDID.NEW,json);
+        }
     });
 
-    KanbanTest.removeBoard("_waiting");
+    KanbanTest.removeBoard(CONST.BOARDID.WAIT);
     KanbanTest.addBoards([
         {
-            id: "_waiting",
+            id: CONST.BOARDID.WAIT,
             title: "ToDo",
             class: "warning",
             item: []
         }
       ]);
-    waitdata.forEach(function(json){
-        KanbanTest.addElement("_waiting",json);
+    mergeddata.forEach(function(json){
+      if(json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.WAIT){
+        KanbanTest.addElement(CONST.BOARDID.WAIT,json);
+      }
     });
 
 
-    KanbanTest.removeBoard("_working");
+    KanbanTest.removeBoard(CONST.BOARDID.WORK);
     KanbanTest.addBoards([
         {
-            id: "_working",
+            id: CONST.BOARDID.WORK,
             title: "Working",
             class: "warning",
             item: []
         }
       ]);
-    workdata.forEach(function(json){
-        KanbanTest.addElement("_working",json);
+    mergeddata.forEach(function(json){
+      if(json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.WORK){
+        KanbanTest.addElement(CONST.BOARDID.WORK,json);
+      }
     });
 
-    KanbanTest.removeBoard("_done");
+    KanbanTest.removeBoard(CONST.BOARDID.DONE);
     KanbanTest.addBoards([
         {
-            id: "_done",
+            id: CONST.BOARDID.DONE,
             title: "Done",
             class: "success",
             item: []
         }
       ]);
-    donedata.forEach(function(json){
-        KanbanTest.addElement("_done",json);
+    mergeddata.forEach(function(json){
+      if(json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.DONE){
+        KanbanTest.addElement(CONST.BOARDID.DONE,json);
+      }
     });
+  
   };
  
-  var myjkanban_tab1_event = function(){
-    var new_task = KanbanTest.getBoardElements("_new");
-    var wait_task = KanbanTest.getBoardElements("_waiting");
-    var work_task = KanbanTest.getBoardElements("_working");
-    var done_task = KanbanTest.getBoardElements("_done");
+  var myjkanban_tabtask_event = function(){
+    var new_task = KanbanTest.getBoardElements(CONST.BOARDID.NEW);
+    var wait_task = KanbanTest.getBoardElements(CONST.BOARDID.WAIT);
+    var work_task = KanbanTest.getBoardElements(CONST.BOARDID.WORK);
+    var done_task = KanbanTest.getBoardElements(CONST.BOARDID.DONE);
 
     mergeddata=[];
     
     [new_task,wait_task,work_task,done_task].forEach(function(tasks, index, array){
         tasks.forEach(function(task){
             var json = {
-                [CONST.CELL_NO.ID]:      $(task).attr(CONST.ATTR.ID),
-                [CONST.CELL_NO.STATUS]:  $(task).attr(CONST.ATTR.STATUS),
-                [CONST.CELL_NO.DATE]:    $(task).attr(CONST.ATTR.DATE),
-                [CONST.CELL_NO.PROJECT]: $(task).attr(CONST.ATTR.PROJECT),
-                [CONST.CELL_NO.CATEGORY]:$(task).attr(CONST.ATTR.CATEGORY),
-                [CONST.CELL_NO.TITLE]:   $(task).text(),
-                [CONST.CELL_NO.PLANH]:   $(task).attr(CONST.ATTR.PLANH),
-                [CONST.CELL_NO.PLANM]:   $(task).attr(CONST.ATTR.PLANM),
-                [CONST.CELL_NO.SPENT]:   $(task).attr(CONST.ATTR.SPENT),
-                [CONST.CELL_NO.START]:   $(task).attr(CONST.ATTR.START),
-                [CONST.CELL_NO.END]:     $(task).attr(CONST.ATTR.END),
+                [CONST.TITLE.ID]:      $(task).attr(CONST.ATTR.ID),
+                [CONST.TITLE.STATUS]:  $(task).attr(CONST.ATTR.STATUS),
+                [CONST.TITLE.DATE]:    $(task).attr(CONST.ATTR.DATE),
+                [CONST.TITLE.PROJECT]: $(task).attr(CONST.ATTR.PROJECT),
+                [CONST.TITLE.CATEGORY]:$(task).attr(CONST.ATTR.CATEGORY),
+                [CONST.TITLE.TITLE]:   $(task).text(),
+                [CONST.TITLE.PLANH]:   $(task).attr(CONST.ATTR.PLANH),
+                [CONST.TITLE.PLANM]:   $(task).attr(CONST.ATTR.PLANM),
+                [CONST.TITLE.SPENT]:   $(task).attr(CONST.ATTR.SPENT),
+                [CONST.TITLE.START]:   $(task).attr(CONST.ATTR.START),
+                [CONST.TITLE.END]:     $(task).attr(CONST.ATTR.END),
             }    
             mergeddata.push(json);
         })

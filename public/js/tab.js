@@ -9,26 +9,46 @@ $(function() {
   })
 
 
-var newdata = {};
-var waitdata = {};
-var workdata = {};
-var donedata = {};
+var memodata = "";
 var mergeddata = [];
 
 
 $(function(){
-  $('#tab2').on('click' , function(){
-    taskchute_tab2_event();
-    myjkanban_tab2_event();
-    writeCSV(mergeddata);
+  $('#tabkanban').on('click' , function(){
+    taskchute_tabkanban_event();
+    myjkanban_tabkanban_event();
+    memo_tabkanban_event();
+    writeCSV(createCSVWriteData());
 
   });
-  $('#tab1').on('click' , function(){
-    myjkanban_tab1_event();
-    taskchute_tab1_event();
-    writeCSV(mergeddata);
+  $('#tabtask').on('click' , function(){
+    myjkanban_tabtask_event();
+    taskchute_tabtask_event();
+    memo_tabtask_event();
+    writeCSV(createCSVWriteData());
   });
+
+  init();
 });
+
+var init = function(){
+
+  readCSV(function(){
+    taskchute_initdata();
+    $("#memodata").val(memodata);
+    myjkanban_tabkanban_event();
+  });
+}
+
+var createCSVWriteData = function(){
+
+  var output = {};
+
+  output.task = mergeddata;
+  output.memo = memodata;
+  return output;
+
+}
 
 var writeCSV = function(inputdata){
   $.ajax({
@@ -42,4 +62,44 @@ var writeCSV = function(inputdata){
   })).fail((data) => {
     console.log('cannot access url');
   })
+}
+
+var readCSV = function(callback){
+  $.ajax({
+    type: "post",
+    url:"/csvread/",
+    dataType:"json"
+  }).done((data => {
+    console.log(data);
+    mergeddata = data.task;
+    memodata = data.memo;
+    callback();
+  })).fail((data) => {
+    console.log('cannot access url');
+  })
+}
+
+var convKeyCellNo = function(keyTitleData){
+
+  var output = []
+
+  keyTitleData.forEach(function(task){
+    var json = {
+      [CONST.CELL_NO.ID]:      task[CONST.TITLE.ID],
+      [CONST.CELL_NO.STATUS]:  task[CONST.TITLE.STATUS],
+      [CONST.CELL_NO.DATE]:    task[CONST.TITLE.DATE],
+      [CONST.CELL_NO.PROJECT]: task[CONST.TITLE.PROJECT],
+      [CONST.CELL_NO.CATEGORY]:task[CONST.TITLE.CATEGORY],
+      [CONST.CELL_NO.TITLE]:   task[CONST.TITLE.TITLE],
+      [CONST.CELL_NO.PLANH]:   task[CONST.TITLE.PLANH],
+      [CONST.CELL_NO.PLANM]:   task[CONST.TITLE.PLANM],
+      [CONST.CELL_NO.SPENT]:   task[CONST.TITLE.SPENT],
+      [CONST.CELL_NO.START]:   task[CONST.TITLE.START],
+      [CONST.CELL_NO.END]:     task[CONST.TITLE.END]
+    };
+    output.push(json);
+  });
+
+  return output;
+
 }

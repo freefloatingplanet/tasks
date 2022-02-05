@@ -27,22 +27,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
     <script src="js/comliteral.js"></script>
-    <script src="js/tab.js"></script>
 
     <input type="hidden" id="jsondata"></input>
     
     <div class="tab-area">
-      <div id=tab1 class="tab active">
-        タブ１
+      <div id=tabfree class="tab active">
+        フリー
       </div>
-      <div id=tab2 class="tab">
-        タブ２
+      <div id=tabtask class="tab">
+        タスク一覧
+      </div>
+      <div id=tabkanban class="tab">
+        カンバン
       </div>
     </div>
     <div class="content-area">
       <div class="content show">
-        <textarea name="memodata" rows="10" cols="150"></textarea>
-        <br>
+        <textarea name="memodata" id="memodata" rows="10" cols="150"></textarea>
+        <script src="js/memo.js"></script>
+      </div>
+      <div class="content">
         <div id="spreadsheet"></div>
         <script src="js/taskchute.js"></script>
       </div>
@@ -53,6 +57,8 @@
     
       </div>
     </div>
+
+    <script src="js/tab.js"></script>
 
   </body>
 </html>
