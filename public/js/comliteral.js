@@ -59,6 +59,21 @@ const CONST = {
         _done: 'done',
         _pending: 'pending'
     },
+    NO_TO_BOARDID:{
+        0: '_new',
+        1: '_waiting',
+        2: '_working',
+        3: '_done',
+        4: '_pending'
+    },
+    BOARDID_TO_NO:{
+        _new:    '0',
+        _waiting:'1',
+        _working:'2',
+        _done:   '3',
+        _pending:'4'
+    },
+    NUMBER_STATUS: 5,
     OFFSET:{
         DEFAULT: 10000,
         DONE: 30000

@@ -8,6 +8,9 @@ var KanbanTest = new jKanban({
     click: function(el) {
       console.log("Trigger on all items click!");
     },
+    dblclick: function(el) {
+      moveTask(el);
+    },
     context: function(el, e) {
       console.log("Trigger on all items right-click!");
     },
@@ -105,6 +108,17 @@ var KanbanTest = new jKanban({
     return json;
   };
 
+  var moveTask = function(el){
+    var elid = $(el).attr(CONST.ATTR.ID);
+    var boardid = KanbanTest.getParentBoardID(elid);
+    var no = CONST.BOARDID_TO_NO[boardid];
+    var nextno = (Number(no) + 1)%CONST.NUMBER_STATUS;
+    var nextboardid = CONST.NO_TO_BOARDID[nextno];
+    KanbanTest.removeElement(elid);
+    KanbanTest.addElement(nextboardid, convElementToJson(el));
+    var nextel = KanbanTest.findElement(elid);
+    dropTask(nextel);
+  };
   var dropTask = function(el){
 
       var taskid = $(el).attr(CONST.ATTR.ID);
@@ -204,11 +218,12 @@ var KanbanTest = new jKanban({
             item: []
         }
       ]);
-    var today = moment().format("YYYY-MM-DD 00:00:00");
+    var todaycal = moment().format("YYYY-MM-DD 00:00:00");
+    var today = moment().format("YYYY/MM/DD");
     pastDoneData = [];
     mergeddata.forEach(function(json){
       if(json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.DONE){
-        if(json[CONST.TITLE.DATE]===today){
+        if([today, todaycal].includes(json[CONST.TITLE.DATE])){
           KanbanTest.addElement(CONST.BOARDID.DONE,json);
         }else{
           pastDoneData.push(json);
@@ -246,19 +261,7 @@ var KanbanTest = new jKanban({
     
     [new_task,wait_task,work_task,done_task,pend_task].forEach(function(tasks, index, array){
         tasks.forEach(function(task){
-            var json = {
-                [CONST.TITLE.ID]:      $(task).attr(CONST.ATTR.ID),
-                [CONST.TITLE.STATUS]:  $(task).attr(CONST.ATTR.STATUS),
-                [CONST.TITLE.DATE]:    $(task).attr(CONST.ATTR.DATE),
-                [CONST.TITLE.PROJECT]: $(task).attr(CONST.ATTR.PROJECT),
-                [CONST.TITLE.CATEGORY]:$(task).attr(CONST.ATTR.CATEGORY),
-                [CONST.TITLE.TITLE]:   $(task).text(),
-                [CONST.TITLE.PLANH]:   $(task).attr(CONST.ATTR.PLANH),
-                [CONST.TITLE.PLANM]:   $(task).attr(CONST.ATTR.PLANM),
-                [CONST.TITLE.SPENT]:   $(task).attr(CONST.ATTR.SPENT),
-                [CONST.TITLE.START]:   $(task).attr(CONST.ATTR.START),
-                [CONST.TITLE.END]:     $(task).attr(CONST.ATTR.END),
-            }    
+            var json = convElementToJson(task);
             mergeddata.push(json);
         });
     });
@@ -270,3 +273,19 @@ var KanbanTest = new jKanban({
 
 
   };
+  var convElementToJson = function(task){
+    var json = {
+      [CONST.TITLE.ID]:      $(task).attr(CONST.ATTR.ID),
+      [CONST.TITLE.STATUS]:  $(task).attr(CONST.ATTR.STATUS),
+      [CONST.TITLE.DATE]:    $(task).attr(CONST.ATTR.DATE),
+      [CONST.TITLE.PROJECT]: $(task).attr(CONST.ATTR.PROJECT),
+      [CONST.TITLE.CATEGORY]:$(task).attr(CONST.ATTR.CATEGORY),
+      [CONST.TITLE.TITLE]:   $(task).text(),
+      [CONST.TITLE.PLANH]:   $(task).attr(CONST.ATTR.PLANH),
+      [CONST.TITLE.PLANM]:   $(task).attr(CONST.ATTR.PLANM),
+      [CONST.TITLE.SPENT]:   $(task).attr(CONST.ATTR.SPENT),
+      [CONST.TITLE.START]:   $(task).attr(CONST.ATTR.START),
+      [CONST.TITLE.END]:     $(task).attr(CONST.ATTR.END),
+    };
+    return json;    
+  }

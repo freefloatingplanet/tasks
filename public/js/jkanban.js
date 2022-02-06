@@ -23,6 +23,7 @@ var dragula = require('dragula');
       'id',
       'title',
       'click',
+      'dblclick',
       'context',
       'drag',
       'dragend',
@@ -56,6 +57,7 @@ var dragula = require('dragula');
       dragendBoard: function (el) {},
       dropBoard: function (el, target, source, sibling) {},
       click: function (el) {},
+      dblclick: function (el) {},
       context: function (el, e) {},
       buttonClick: function (el, boardId) {},
       propagationHandlers: [],
@@ -213,12 +215,14 @@ var dragula = require('dragula');
       nodeItem.innerHTML = __buildItemCard(element)
       //add function
       nodeItem.clickfn = element.click
+      nodeItem.dblclickfn = element.dblclick
       nodeItem.contextfn = element.context;
       nodeItem.dragfn = element.drag
       nodeItem.dragendfn = element.dragend
       nodeItem.dropfn = element.drop
       __appendCustomProperties(nodeItem, element)
       __onclickHandler(nodeItem)
+      __ondblclickHandler(nodeItem)
       __onContextHandler(nodeItem)
       if (self.options.itemHandleOptions.enabled) {
         nodeItem.style.cursor = 'default'
@@ -328,6 +332,7 @@ var dragula = require('dragula');
           nodeItem.innerHTML = __buildItemCard(itemKanban)
           //add function
           nodeItem.clickfn = itemKanban.click
+          nodeItem.dblclickfn = itemKanban.dblclick
           nodeItem.contextfn = itemKanban.context
           nodeItem.dragfn = itemKanban.drag
           nodeItem.dragendfn = itemKanban.dragend
@@ -335,6 +340,7 @@ var dragula = require('dragula');
           __appendCustomProperties(nodeItem, itemKanban)
           //add click handler of item
           __onclickHandler(nodeItem)
+          __ondblclickHandler(nodeItem)
           __onContextHandler(nodeItem)
           if (self.options.itemHandleOptions.enabled) {
             nodeItem.style.cursor = 'default'
@@ -402,12 +408,14 @@ var dragula = require('dragula');
       nodeItem.innerHTML = __buildItemCard(element)
       // add function
       nodeItem.clickfn = element.click
+      nodeItem.dblclickfn = element.dblclick
       nodeItem.contextfn = element.context
       nodeItem.dragfn = element.drag
       nodeItem.dragendfn = element.dragend
       nodeItem.dropfn = element.drop
       __appendCustomProperties(nodeItem, element)
       __onclickHandler(nodeItem)
+      __ondblclickHandler(nodeItem)
       __onContextHandler(nodeItem)
       return self
     }
@@ -516,6 +524,15 @@ var dragula = require('dragula');
         if (typeof this.clickfn === 'function') this.clickfn(this)
       })
     }
+
+    function __ondblclickHandler (nodeItem, dblclickfn) {
+      nodeItem.addEventListener('dblclick', function (e) {
+        if (!self.options.propagationHandlers.includes('dblclick')) e.preventDefault()
+        self.options.dblclick(this)
+        if (typeof this.dblclickfn === 'function') this.dblclickfn(this)
+      })
+    }
+
 
     function __onContextHandler(nodeItem, contextfn) {
       if (nodeItem.addEventListener) {
