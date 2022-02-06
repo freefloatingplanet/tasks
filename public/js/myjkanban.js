@@ -63,7 +63,7 @@ var KanbanTest = new jKanban({
       },
       {
         id: "_done",
-        title: "Done",
+        title: "Done(Today)",
         class: "success",
         item: []
       }
@@ -135,9 +135,6 @@ var KanbanTest = new jKanban({
       $(el).attr(CONST.ATTR.START,start);
       $(el).attr(CONST.ATTR.END,end);
 
-
-
-
   }
 
 
@@ -192,14 +189,20 @@ var KanbanTest = new jKanban({
     KanbanTest.addBoards([
         {
             id: CONST.BOARDID.DONE,
-            title: "Done",
+            title: "Done(Today)",
             class: "success",
             item: []
         }
       ]);
+    var today = moment().format("YYYY-MM-DD 00:00:00");
+    pastDoneData = [];
     mergeddata.forEach(function(json){
       if(json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.DONE){
-        KanbanTest.addElement(CONST.BOARDID.DONE,json);
+        if(json[CONST.TITLE.DATE]===today){
+          KanbanTest.addElement(CONST.BOARDID.DONE,json);
+        }else{
+          pastDoneData.push(json);
+        }
       }
     });
   
@@ -229,8 +232,13 @@ var KanbanTest = new jKanban({
                 [CONST.TITLE.END]:     $(task).attr(CONST.ATTR.END),
             }    
             mergeddata.push(json);
-        })
-    })
+        });
+    });
+
+    pastDoneData.forEach(function(json){
+      mergeddata.push(json);
+    });
+
 
 
   };

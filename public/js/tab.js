@@ -11,6 +11,7 @@ $(function() {
 
 var memodata = "";
 var mergeddata = [];
+var pastDoneData = [];
 
 
 $(function(){
