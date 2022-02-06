@@ -1,5 +1,3 @@
-const { toUnicode } = require("punycode");
-
 var insertrow = function(instance, y){
     table.setValueFromCoords(CONST.CELL_NO.STATUS,y+1,'new',true);
     updateid();
