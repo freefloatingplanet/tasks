@@ -66,7 +66,14 @@ var KanbanTest = new jKanban({
         title: "Done(Today)",
         class: "success",
         item: []
+      },
+      {
+        id: "_pending",
+        title: "Pending",
+        class: "info",
+        item: []
       }
+
     ]
   });
 
@@ -139,6 +146,7 @@ var KanbanTest = new jKanban({
 
 
   var myjkanban_tabkanban_event = function(){
+    //NEW
     KanbanTest.removeBoard(CONST.BOARDID.NEW);
     KanbanTest.addBoards([
         {
@@ -154,6 +162,7 @@ var KanbanTest = new jKanban({
         }
     });
 
+    //WAIT
     KanbanTest.removeBoard(CONST.BOARDID.WAIT);
     KanbanTest.addBoards([
         {
@@ -169,7 +178,7 @@ var KanbanTest = new jKanban({
       }
     });
 
-
+    //WORK
     KanbanTest.removeBoard(CONST.BOARDID.WORK);
     KanbanTest.addBoards([
         {
@@ -185,6 +194,7 @@ var KanbanTest = new jKanban({
       }
     });
 
+    //DONE
     KanbanTest.removeBoard(CONST.BOARDID.DONE);
     KanbanTest.addBoards([
         {
@@ -205,6 +215,23 @@ var KanbanTest = new jKanban({
         }
       }
     });
+
+    //PEND
+    KanbanTest.removeBoard(CONST.BOARDID.PEND);
+    KanbanTest.addBoards([
+        {
+            id: CONST.BOARDID.PEND,
+            title: "Pending",
+            class: "info",
+            item: []
+        }
+      ]);
+    mergeddata.forEach(function(json){
+      if(json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.PEND){
+        KanbanTest.addElement(CONST.BOARDID.PEND,json);
+      }
+    });
+
   
   };
  
@@ -213,10 +240,11 @@ var KanbanTest = new jKanban({
     var wait_task = KanbanTest.getBoardElements(CONST.BOARDID.WAIT);
     var work_task = KanbanTest.getBoardElements(CONST.BOARDID.WORK);
     var done_task = KanbanTest.getBoardElements(CONST.BOARDID.DONE);
+    var pend_task = KanbanTest.getBoardElements(CONST.BOARDID.PEND);
 
     mergeddata=[];
     
-    [new_task,wait_task,work_task,done_task].forEach(function(tasks, index, array){
+    [new_task,wait_task,work_task,done_task,pend_task].forEach(function(tasks, index, array){
         tasks.forEach(function(task){
             var json = {
                 [CONST.TITLE.ID]:      $(task).attr(CONST.ATTR.ID),

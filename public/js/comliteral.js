@@ -42,19 +42,22 @@ const CONST = {
         NEW: 'new',
         WAIT: 'waiting',
         WORK: 'working',
-        DONE: 'done'
+        DONE: 'done',
+        PEND: 'pending'
     },
     BOARDID:{
         NEW: '_new',
         WAIT: '_waiting',
         WORK: '_working',
-        DONE: '_done'
+        DONE: '_done',
+        PEND: '_pending'
     },
     BOARDID_TO_TASK:{
         _new: 'new',
         _waiting: 'waiting',
         _working: 'working',
-        _done: 'done'
+        _done: 'done',
+        _pending: 'pending'
     },
     OFFSET:{
         DEFAULT: 10000,

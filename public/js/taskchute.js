@@ -19,11 +19,15 @@ var highlight = function(y){
     var start = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.START,y]));
     var end = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.END,y]));
     var dt = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.DATE,y]));
+    var st = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.STATUS,y]));
 
     var status = CONST.TASK_STATUS.NEW;
     var color = 'white';
 
-    if(start.length !== 0 && end.length !== 0){
+    if(st === CONST.TASK_STATUS.PEND){
+        status = CONST.TASK_STATUS.PEND;
+        color = 'blue';
+    }else if(start.length !== 0 && end.length !== 0){
       status = CONST.TASK_STATUS.DONE;
       color = 'grey';
     }else if(start.length !== 0 ){
