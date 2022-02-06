@@ -9,8 +9,6 @@ var editionend = function(instance, cell, x, y, value) {
   if(cellName === 'end'){
     openclose();
     updateid();
-    sortbyid();
-    updateid();
   }
 }
 var openclose = function(){
