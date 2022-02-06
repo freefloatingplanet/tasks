@@ -44,13 +44,9 @@ var highlight = function(y){
 
 var updateid = function(){
   for(var y=0;y<table.getColumnData(1).length;y++){
-    console.log(y);
     var id = 0;
     var status = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.STATUS,y]));
     var offset = CONST.OFFSET.DEFAULT;
-    if(status === "done"){
-      offset = CONST.OFFSET.DONE;
-    }
     id = y + offset;
     
     table.setValueFromCoords(CONST.CELL_NO.ID,y,id,true)
