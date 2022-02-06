@@ -103,7 +103,41 @@ var KanbanTest = new jKanban({
       var taskid = $(el).attr(CONST.ATTR.ID);
       var boardid = KanbanTest.getParentBoardID(taskid);
       var status = CONST.BOARDID_TO_TASK[boardid];
+      var date = $(el).attr(CONST.ATTR.DATE);
+      var start = $(el).attr(CONST.ATTR.START);
+      var end = $(el).attr(CONST.ATTR.END);
+
+      switch(status){
+        case CONST.TASK_STATUS.DONE:
+          date = moment().format("YYYY/MM/DD");
+          if(start.length===0) start = moment().format("HH:mm");
+          end = moment().format("HH:mm");
+          break;
+        case CONST.TASK_STATUS.WORK:
+          date = moment().format("YYYY/MM/DD");
+          start = moment().format("HH:mm");
+          end = "";
+          break;
+        case CONST.TASK_STATUS.WAIT:
+          date = moment().format("YYYY/MM/DD");
+          start = "";
+          end = "";
+          break;
+        case CONST.TASK_STATUS.NEW:
+          date = "";
+          start = "";
+          end = "";
+          break;
+      }
+
       $(el).attr(CONST.ATTR.STATUS,status);
+      $(el).attr(CONST.ATTR.DATE,date);
+      $(el).attr(CONST.ATTR.START,start);
+      $(el).attr(CONST.ATTR.END,end);
+
+
+
+
   }
 
 

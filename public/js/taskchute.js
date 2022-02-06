@@ -1,5 +1,5 @@
 var insertrow = function(instance, y){
-    table.setValueFromCoords(CONST.CELL_NO.STATUS,y+1,'new',true);
+    table.setValueFromCoords(CONST.CELL_NO.STATUS,y+1,CONST.TASK_STATUS.NEW,true);
     updateid();
 }
 
@@ -92,7 +92,7 @@ var table = "";
     columns: [
         { type: 'numeric' , title:'id'      , width:0},
         { type: 'text'    , title:'status'  , width:100},
-        { type: 'calendar', title:'date'    , width:100 },
+        { type: 'calendar', title:'date'    , width:100 ,options: { format:'YYYY/MM/DD' }},
         { type: 'text'    , title:'project' , width:100 ,align:'left' },
         { type: 'text'    , title:'category', width:100 ,align:'left' },
         { type: 'text'    , title:'title'   , width:300 ,align:'left'},
