@@ -53,12 +53,14 @@ var updateid = function(){
 }
 
 var sortbyid = function(){
-  table.orderBy(CONST.CELL_NO.ID,true);
+  table.orderBy(CONST.CELL_NO.ID,false);
 }
 
 var taskchute_initdata = function(){
   table.setData({});
   table.setData(convKeyCellNo(mergeddata));
+  openclose();
+  sortbyid();
 }
 
 var taskchute_tabtask_event = function(){
