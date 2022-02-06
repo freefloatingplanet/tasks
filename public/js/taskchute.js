@@ -1,3 +1,4 @@
+const { toUnicode } = require("punycode");
 
 var insertrow = function(instance, y){
     table.setValueFromCoords(CONST.CELL_NO.STATUS,y+1,'new',true);
@@ -19,23 +20,26 @@ var openclose = function(){
 var highlight = function(y){
     var start = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.START,y]));
     var end = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.END,y]));
+    var dt = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.DATE,y]));
+
+    var status = CONST.TASK_STATUS.NEW;
+    var color = 'white';
+
     if(start.length !== 0 && end.length !== 0){
-      close(y);
-    }else{
-      open(y);
-  }
-}
-var close = function(y){
-  for(var x=CONST.CELL_NO.ID;x<=table.getRowData(y).length;x++){
-    table.setStyle(jexcel.getColumnNameFromId([x,y]),'background-color','grey');
-  }
-  table.setValueFromCoords(CONST.CELL_NO.STATUS,y,'done',true);
-}
-var open = function(y){
-  for(var x=CONST.CELL_NO.ID;x<=table.getRowData(y).length;x++){
-    table.setStyle(jexcel.getColumnNameFromId([x,y]),'background-color','white');
-  }
-  table.setValueFromCoords(CONST.CELL_NO.STATUS,y,'working',true);
+      status = CONST.TASK_STATUS.DONE;
+      color = 'grey';
+    }else if(start.length !== 0 ){
+      status = CONST.TASK_STATUS.WORK;
+    }else if(dt.length !==0 ){
+      status = CONST.TASK_STATUS.WAIT;
+    }
+
+    for(var x=CONST.CELL_NO.ID;x<=table.getRowData(y).length;x++){
+      table.setStyle(jexcel.getColumnNameFromId([x,y]),'background-color',color);
+    }
+    table.setValueFromCoords(CONST.CELL_NO.STATUS,y,status,true);
+
+
 }
 
 var updateid = function(){
