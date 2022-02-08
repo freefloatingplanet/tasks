@@ -26,7 +26,7 @@ var highlight = function(y){
 
     if(st === CONST.TASK_STATUS.PEND){
         status = CONST.TASK_STATUS.PEND;
-        color = 'blue';
+        color = 'cornflowerblue';
     }else if(start.length !== 0 && end.length !== 0){
       status = CONST.TASK_STATUS.DONE;
       color = 'grey';
