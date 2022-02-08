@@ -24,6 +24,8 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
     integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
     crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     
     <script src="js/comliteral.js"></script>
@@ -47,6 +49,18 @@
         <script src="js/memo.js"></script>
       </div>
       <div class="content show">
+        <table>
+          <tr>
+            <th>本日</th> <td><input type="text" id="today"></td>
+          </tr>
+          <tr>
+            <th>予定時間</th> <td><span id="plantime">9</span></td>
+          </tr>
+          <tr>
+            <th>実績時間</th> <td><span id="spenttime">9</span></td>
+          </tr>
+        </table>
+        <br>
         <div id="spreadsheet"></div>
         <script src="js/taskchute.js"></script>
       </div>

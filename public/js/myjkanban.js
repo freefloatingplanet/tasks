@@ -98,9 +98,9 @@ var KanbanTest = new jKanban({
         [CONST.TITLE.PROJECT]: "",
         [CONST.TITLE.CATEGORY]:"",
         [CONST.TITLE.TITLE]:   title,
-        [CONST.TITLE.PLANH]:   "",
-        [CONST.TITLE.PLANM]:   "",
-        [CONST.TITLE.SPENT]:   "",
+        [CONST.TITLE.PLANH]:   "0",
+        [CONST.TITLE.PLANM]:   "0",
+        [CONST.TITLE.SPENT]:   "0",
         [CONST.TITLE.START]:   "",
         [CONST.TITLE.END]:     "",
     };
