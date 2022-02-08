@@ -12,6 +12,7 @@
     />
     <link rel="stylesheet" href="css/myjkanban.css" />
     <link rel="stylesheet" href="css/mytab.css" />
+    <link rel="stylesheet" href="css/taskchute.css" />
 
     <script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
     <script src="https://jsuites.net/v4/jsuites.js"></script>
@@ -49,15 +50,11 @@
         <script src="js/memo.js"></script>
       </div>
       <div class="content show">
-        <table>
+        <table class="task-table">
           <tr>
-            <th>本日</th> <td><input type="text" id="today"></td>
-          </tr>
-          <tr>
-            <th>予定時間</th> <td><span id="plantime">9</span></td>
-          </tr>
-          <tr>
-            <th>実績時間</th> <td><span id="spenttime">9</span></td>
+            <th class="task-th">本日</th> <td class="task-td"><input type="text" id="today"></td>
+            <th class="task-th">予定時間</th> <td class="task-td"><span id="plantime">9</span>時間</td>
+            <th class="task-th">実績時間</th> <td class="task-td"><span id="spenttime">9</span>時間</td>
           </tr>
         </table>
         <br>
