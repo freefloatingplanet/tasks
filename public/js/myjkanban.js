@@ -172,6 +172,11 @@ var KanbanTest = new jKanban({
       ]);
     mergeddata.forEach(function(json){
         if(json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.NEW){
+          if(json[CONST.TITLE.PROJECT].length!==0) json['header'] = json[CONST.TITLE.PROJECT];
+          if(json[CONST.TITLE.CATEGORY].length!==0){
+            if(json['header']) json['header'] += '.';
+            json['header'] += json[CONST.TITLE.CATEGORY];
+          }
           KanbanTest.addElement(CONST.BOARDID.NEW,json);
         }
     });
@@ -188,6 +193,11 @@ var KanbanTest = new jKanban({
       ]);
     mergeddata.forEach(function(json){
       if(json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.WAIT){
+        if(json[CONST.TITLE.PROJECT].length!==0) json['header'] = json[CONST.TITLE.PROJECT];
+        if(json[CONST.TITLE.CATEGORY].length!==0){
+          if(json['header']) json['header'] += '.';
+          json['header'] += json[CONST.TITLE.CATEGORY];
+        }
         KanbanTest.addElement(CONST.BOARDID.WAIT,json);
       }
     });
@@ -204,6 +214,11 @@ var KanbanTest = new jKanban({
       ]);
     mergeddata.forEach(function(json){
       if(json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.WORK){
+        if(json[CONST.TITLE.PROJECT].length!==0) json['header'] = json[CONST.TITLE.PROJECT];
+        if(json[CONST.TITLE.CATEGORY].length!==0){
+          if(json['header']) json['header'] += '.';
+          json['header'] += json[CONST.TITLE.CATEGORY];
+        }
         KanbanTest.addElement(CONST.BOARDID.WORK,json);
       }
     });
@@ -224,6 +239,11 @@ var KanbanTest = new jKanban({
     mergeddata.forEach(function(json){
       if(json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.DONE){
         if([today, todaycal].includes(json[CONST.TITLE.DATE])){
+          if(json[CONST.TITLE.PROJECT].length!==0) json['header'] = json[CONST.TITLE.PROJECT];
+          if(json[CONST.TITLE.CATEGORY].length!==0){
+            if(json['header']) json['header'] += '.';
+            json['header'] += json[CONST.TITLE.CATEGORY];
+          }
           KanbanTest.addElement(CONST.BOARDID.DONE,json);
         }else{
           pastDoneData.push(json);
@@ -243,6 +263,11 @@ var KanbanTest = new jKanban({
       ]);
     mergeddata.forEach(function(json){
       if(json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.PEND){
+        if(json[CONST.TITLE.PROJECT].length!==0) json['header'] = json[CONST.TITLE.PROJECT];
+        if(json[CONST.TITLE.CATEGORY].length!==0){
+          if(json['header']) json['header'] += '.';
+          json['header'] += json[CONST.TITLE.CATEGORY];
+        }
         KanbanTest.addElement(CONST.BOARDID.PEND,json);
       }
     });
@@ -274,18 +299,26 @@ var KanbanTest = new jKanban({
 
   };
   var convElementToJson = function(task){
+
+    var text = $(task).text();
+    var header = $(task).find('#data-header').text();
+    if(header.lenth !== 0) text = text.replace(new RegExp(header,'g'),'');
+
     var json = {
       [CONST.TITLE.ID]:      $(task).attr(CONST.ATTR.ID),
       [CONST.TITLE.STATUS]:  $(task).attr(CONST.ATTR.STATUS),
       [CONST.TITLE.DATE]:    $(task).attr(CONST.ATTR.DATE),
       [CONST.TITLE.PROJECT]: $(task).attr(CONST.ATTR.PROJECT),
       [CONST.TITLE.CATEGORY]:$(task).attr(CONST.ATTR.CATEGORY),
-      [CONST.TITLE.TITLE]:   $(task).text(),
+      [CONST.TITLE.TITLE]:   text,
       [CONST.TITLE.PLANH]:   $(task).attr(CONST.ATTR.PLANH),
       [CONST.TITLE.PLANM]:   $(task).attr(CONST.ATTR.PLANM),
       [CONST.TITLE.SPENT]:   $(task).attr(CONST.ATTR.SPENT),
       [CONST.TITLE.START]:   $(task).attr(CONST.ATTR.START),
       [CONST.TITLE.END]:     $(task).attr(CONST.ATTR.END),
     };
+
+    if(header.length !== 0) json['header'] = header;
+
     return json;    
   }

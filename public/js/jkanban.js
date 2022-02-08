@@ -21,6 +21,7 @@ var dragula = require('dragula');
     }
     this._disallowedItemProperties = [
       'id',
+      'header',
       'title',
       'click',
       'dblclick',
@@ -591,6 +592,7 @@ var dragula = require('dragula');
 
     function __buildItemCard(item) {
       var result = 'title' in item ? item.title : '';
+      var headerdiv = 'header' in item ? '<div class=kanban-item-header id=data-header>'+item.header+'<br></div>' : '';
 
       if (self.options.itemHandleOptions.enabled) {
           if ((self.options.itemHandleOptions.customHandler || undefined) === undefined) {
@@ -609,7 +611,7 @@ var dragula = require('dragula');
                   customItemLayout = '';
               }
 
-              result = '<div class=\'item_handle ' + customCssHandler + '\'><i class=\'item_handle ' + customCssIconHandler + '\'></i></div><div>' + result + '</div>'
+              result = '<div class=\'item_handle ' + customCssHandler + '\'><i class=\'item_handle ' + customCssIconHandler + '\'></i></div><div>'+headerdiv + result + '</div>'
           } else {
               result = '<div> ' + self.options.itemHandleOptions.customHandler.replace(/%([^%]+)%/g, function (match, key) 
                       { return item[key] !== undefined ? item[key] : '' }) + ' </div>'

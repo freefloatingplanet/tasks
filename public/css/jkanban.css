@@ -157,3 +157,8 @@
 .drag_handler_icon:after {
     bottom: 6px;
 }
+
+.kanban-item-header {
+  color: grey;
+  font-size: 75%;
+}
