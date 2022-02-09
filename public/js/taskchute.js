@@ -52,14 +52,14 @@ var updateDateArea = function(){
 
     var date = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.DATE,y]));
     if([today, todaycal].includes(date)){
-      sumPlanTime += table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.PLANM,y]));
-      sumSpentTime += table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.SPENT,y]));
+      sumPlanTime += Number(table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.PLANM,y])));
+      sumSpentTime += Number(table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.SPENT,y])));
     }
   }
 
   // 日付領域の更新
-  $('#plantime').text(sumPlanTime/60);
-  $('#spenttime').text(sumSpentTime/60);
+  $('#plantime').text((sumPlanTime/60).toFixed(1));
+  $('#spenttime').text((sumSpentTime/60).toFixed(1));
 }
 
 var openclose = function(){
@@ -116,6 +116,57 @@ var updateid = function(){
 
 var sortbyid = function(){
   table.orderBy(CONST.CELL_NO.ID,false);
+}
+
+$(function(){
+  $('#wbsmode').change(function() {
+    wbsMode();
+  });
+});
+
+var wbsMode = function(){
+    // prop()でチェックの状態を取得
+    var wbsModeIsOn = $('#wbsmode').prop('checked');
+
+    if(wbsModeIsOn){
+      wbsModeOn();
+    }else{
+      wbsModeOff();
+    }
+}
+
+var wbsModeOn = function(){
+  table.orderBy(CONST.CELL_NO.CATEGORY,false);
+  table.orderBy(CONST.CELL_NO.PROJECT,false);
+
+  var nowValue1 = "";
+  var prevValue1 = "";
+  var nowValue2 = "";
+  var prevValue2 = "";
+  for(var y=0;y<table.getColumnData(CONST.CELL_NO.ID).length;y++){
+
+    nowValue1 = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.PROJECT,y]));
+    nowValue2 = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.CATEGORY,y]));
+
+    if(nowValue1.length !==0 && nowValue1 === prevValue1){
+      table.setStyle(jexcel.getColumnNameFromId([CONST.CELL_NO.PROJECT,y]),'color','transparent');
+      if(nowValue2.length !==0 && nowValue2 === prevValue2) table.setStyle(jexcel.getColumnNameFromId([CONST.CELL_NO.CATEGORY,y]),'color','transparent');
+    }
+    prevValue1 = nowValue1;
+    prevValue2 = nowValue2;
+
+  }
+
+
+}
+var wbsModeOff = function(){
+  for(var y=0;y<table.getColumnData(CONST.CELL_NO.ID).length;y++){
+
+    table.setStyle(jexcel.getColumnNameFromId([CONST.CELL_NO.PROJECT,y]),'color','black');
+    table.setStyle(jexcel.getColumnNameFromId([CONST.CELL_NO.CATEGORY,y]),'color','black');
+
+  }
+
 }
 
 var taskchute_initdata = function(){
