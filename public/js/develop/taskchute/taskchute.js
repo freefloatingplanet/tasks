@@ -8,17 +8,60 @@ $(function() {
   });
 });
 
+$(function(){
+  $('#wbsmode').change(function() {
+    wbsMode();
+  });
+});
+
 
 // テーブル領域
-var insertrow = function(instance, y){
+var insertRow = function(){
+  insertFunc(false);
+}
+
+var deleteRow = function(){
+  var selectedRows = table.getSelectedRows(true);
+  var selectedColumns = table.getSelectedColumns();
+  if(selectedRows.length===1){
+    var row = selectedRows[0];
+    var col = selectedColumns[0];
+    table.deleteRow(selectedRows[0],1);
+    table.updateSelectionFromCoords(col,row,col,row);
+  }
+
+}
+
+var copyRow = function(){
+  insertFunc(true);
+}
+
+var insertFunc = function(isCopy){
+
+  var selectedRows = table.getSelectedRows(true);
+  if(selectedRows.length===1){
+    var row = selectedRows[0];
+    var array = [];
+    if(isCopy){
+      array = table.getRowData(row);
+    }
+    table.insertRow(array,Number(row));
+  }
+}
+
+var insertRow4Table = function(instance, y){
+  var status = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.STATUS,y+1]));
+  if(status.length===0){
     table.setValueFromCoords(CONST.CELL_NO.STATUS,y+1,CONST.TASK_STATUS.NEW,true);
     table.setValueFromCoords(CONST.CELL_NO.PLANH,y+1,0,true);
     table.setValueFromCoords(CONST.CELL_NO.PLANM,y+1,0,true);
     table.setValueFromCoords(CONST.CELL_NO.SPENT,y+1,0,true);
-    updateid();
+  }
+  updateid();
 }
 
-var editionend = function(instance, cell, x, y, value) {
+
+var editioned4Table = function(instance, cell, x, y, value) {
   var cellName = table.getHeader(x);
   switch(cellName){
     case CONST.TITLE.END:
@@ -99,8 +142,6 @@ var highlight = function(y){
     }
     table.setValueFromCoords(CONST.CELL_NO.STATUS,y,status,true);
     table.setValueFromCoords(CONST.CELL_NO.SPENT,y,spent_m,true);
-
-
 }
 
 var updateid = function(){
@@ -117,12 +158,6 @@ var updateid = function(){
 var sortbyid = function(){
   table.orderBy(CONST.CELL_NO.ID,false);
 }
-
-$(function(){
-  $('#wbsmode').change(function() {
-    wbsMode();
-  });
-});
 
 var wbsMode = function(){
     // prop()でチェックの状態を取得
@@ -218,7 +253,7 @@ var table = "";
         { type: 'text'    , title:'start'   , width:100 },
         { type: 'text'    , title:'end'     , width:100 },
      ],
-     oneditionend : editionend,
-     oninsertrow : insertrow,
+     oneditionend : editioned4Table,
+     oninsertrow : insertRow4Table,
     });
 }());
