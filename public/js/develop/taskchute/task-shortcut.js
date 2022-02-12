@@ -9,3 +9,12 @@ shortcut.add("Ctrl+Alt+d",function() {
 shortcut.add("Ctrl+Alt+p",function() {
     copyRow();
 });
+
+// Ctrl+;
+shortcut.add('Ctrl+;',function() {
+    setCurrentDate();
+});
+// Ctrl+:
+shortcut.add('Ctrl+:',function() {
+    setCurrentTime();
+});

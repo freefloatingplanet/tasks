@@ -16,6 +16,7 @@ $(function(){
 
 
 // テーブル領域
+// ショートカット用
 var insertRow = function(){
   insertFunc(false);
 }
@@ -29,7 +30,6 @@ var deleteRow = function(){
     table.deleteRow(selectedRows[0],1);
     table.updateSelectionFromCoords(col,row,col,row);
   }
-
 }
 
 var copyRow = function(){
@@ -49,6 +49,27 @@ var insertFunc = function(isCopy){
   }
 }
 
+var setCurrentDate = function(){
+  var date = moment().format("YYYY/MM/DD");
+  setValueOnSelectedCell(date);
+}
+
+var setCurrentTime = function(){
+  var time = moment().format("hh:mm");
+  setValueOnSelectedCell(time);
+}
+
+var setValueOnSelectedCell = function(value){
+  var selectedRows = table.getSelectedRows(true);
+  var selectedColumns = table.getSelectedColumns();
+  if(selectedRows.length===1){
+    var row = selectedRows[0];
+    var col = selectedColumns[0];
+    table.setValueFromCoords(col,row,value,true);
+  }
+}
+
+// テーブルイベント
 var insertRow4Table = function(instance, y){
   var status = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.STATUS,y+1]));
   if(status.length===0){
@@ -191,8 +212,6 @@ var wbsModeOn = function(){
     prevValue2 = nowValue2;
 
   }
-
-
 }
 var wbsModeOff = function(){
   for(var y=0;y<table.getColumnData(CONST.CELL_NO.ID).length;y++){
@@ -201,7 +220,6 @@ var wbsModeOff = function(){
     table.setStyle(jexcel.getColumnNameFromId([CONST.CELL_NO.CATEGORY,y]),'color','black');
 
   }
-
 }
 
 var taskchute_initdata = function(){
