@@ -131,7 +131,8 @@ var KanbanTest = new jKanban({
       switch(status){
         case CONST.TASK_STATUS.DONE:
           date = moment().format("YYYY/MM/DD");
-          if(start.length===0) start = moment().format("HH:mm");
+//          if(start.length===0) start = moment().format("HH:mm");
+          if(start.length===0) start = getLatestEndTime();
           end = moment().format("HH:mm");
           break;
         case CONST.TASK_STATUS.WORK:
@@ -322,3 +323,25 @@ var KanbanTest = new jKanban({
 
     return json;    
   }
+
+  var getLatestEndTime = function(){
+    var done_task = KanbanTest.getBoardElements(CONST.BOARDID.DONE);
+    var today = moment().format('YYYY/MM/DD');
+    var todayZeroTime = moment(today+'T00:00:00','YYYY/MM/DDTHH:mm:ss');
+    var latestEndTime = todayZeroTime;
+
+    done_task.forEach(function(task, index, array){
+      if($(task).attr(CONST.ATTR.END).length>0){
+        var endTime = moment(today+'T'+$(task).attr(CONST.ATTR.END)+'00','YYYY/MM/DDTHH:mm:ss');
+        endTime.isAfter(latestEndTime);
+        latestEndTime = endTime;
+      }
+    });
+
+    if(latestEndTime.isSame(todayZeroTime)){
+      latestEndTime = moment();
+    }
+
+    return latestEndTime.format('HH:mm');
+  }
+
