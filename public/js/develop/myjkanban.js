@@ -333,8 +333,7 @@ var KanbanTest = new jKanban({
     done_task.forEach(function(task, index, array){
       if($(task).attr(CONST.ATTR.END).length>0){
         var endTime = moment(today+'T'+$(task).attr(CONST.ATTR.END)+'00','YYYY/MM/DDTHH:mm:ss');
-        endTime.isAfter(latestEndTime);
-        latestEndTime = endTime;
+        if(endTime.isAfter(latestEndTime)) latestEndTime = endTime;
       }
     });
 
