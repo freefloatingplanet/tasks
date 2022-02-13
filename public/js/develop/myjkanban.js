@@ -85,7 +85,7 @@ var KanbanTest = new jKanban({
   var createTask = function(boardId, title){
 
     var status = CONST.BOARDID_TO_TASK[boardId];
-    var nextid = KanbanTest.getBoardElements.length;
+    var nextid = getAllElementCount();
     var offset = CONST.OFFSET.DEFAULT;
 
     var t = new Task(title);
@@ -270,6 +270,18 @@ var KanbanTest = new jKanban({
 
 
   };
+
+  var getAllElementCount = function(){
+    var count = KanbanTest.getBoardElements(CONST.BOARDID.NEW).length +
+    KanbanTest.getBoardElements(CONST.BOARDID.WAIT).length + 
+    KanbanTest.getBoardElements(CONST.BOARDID.WORK).length + 
+    KanbanTest.getBoardElements(CONST.BOARDID.DONE).length + 
+    KanbanTest.getBoardElements(CONST.BOARDID.PEND).length +
+    pastDoneData.length
+
+    return count;
+  }
+
   var convElementToJson = function(task){
 
     var text = $(task).text();
