@@ -5,6 +5,9 @@ $(function() {
     defaultDate: new Date(), // 2020/8/5を表示
     numberOfMonths:1,                // 表示される月の数:2
     dateFormat: 'yy/mm/dd',      // yyyy年mm月dd日
+    onClose: function(date, datepicker){
+      updateDateArea();
+    }
   });
 });
 
@@ -107,8 +110,10 @@ var editioned4Table = function(instance, cell, x, y, value) {
 // 日付領域の更新
 var updateDateArea = function(){
 
-  var todaycal = moment().format("YYYY-MM-DD 00:00:00");
-  var today = moment().format("YYYY/MM/DD");
+  var date = $('#today').val();
+  var format = 'YYYY/MM/DD';
+  var todaycal = moment(date, format).format(`${format}T00:00:00`);
+  var today = moment(date, format).format(format);
   var sumPlanTime = 0;
   var sumSpentTime = 0;
 
