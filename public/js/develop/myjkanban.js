@@ -87,25 +87,12 @@ var KanbanTest = new jKanban({
     var status = CONST.BOARDID_TO_TASK[boardId];
     var nextid = KanbanTest.getBoardElements.length;
     var offset = CONST.OFFSET.DEFAULT;
-    if(status === CONST.BOARDID.DONE){
-        offset = CONST.OFFSET.DONE;
-    }
 
-    var json = {
-        [CONST.TITLE.ID]:      nextid + offset,
-        [CONST.TITLE.STATUS]:  status,  
-        [CONST.TITLE.DATE]:    "",
-        [CONST.TITLE.PROJECT]: "",
-        [CONST.TITLE.CATEGORY]:"",
-        [CONST.TITLE.TITLE]:   title,
-        [CONST.TITLE.PLANH]:   "0",
-        [CONST.TITLE.PLANM]:   "0",
-        [CONST.TITLE.SPENT]:   "0",
-        [CONST.TITLE.START]:   "",
-        [CONST.TITLE.END]:     "",
-    };
+    var t = new Task(title);
+    t.create(status);
+    t.setId(nextid+offset);
 
-    return json;
+    return t.getTask();
   };
 
   var moveTask = function(el){
@@ -124,39 +111,23 @@ var KanbanTest = new jKanban({
       var taskid = $(el).attr(CONST.ATTR.ID);
       var boardid = KanbanTest.getParentBoardID(taskid);
       var status = CONST.BOARDID_TO_TASK[boardid];
-      var date = $(el).attr(CONST.ATTR.DATE);
+      var title = $(el).attr(CONST.ATTR.TITLE);
       var start = $(el).attr(CONST.ATTR.START);
-      var end = $(el).attr(CONST.ATTR.END);
 
-      switch(status){
-        case CONST.TASK_STATUS.DONE:
-          date = moment().format("YYYY/MM/DD");
-//          if(start.length===0) start = moment().format("HH:mm");
-          if(start.length===0) start = getLatestEndTime();
-          end = moment().format("HH:mm");
-          break;
-        case CONST.TASK_STATUS.WORK:
-          date = moment().format("YYYY/MM/DD");
-          start = moment().format("HH:mm");
-          end = "";
-          break;
-        case CONST.TASK_STATUS.WAIT:
-          date = moment().format("YYYY/MM/DD");
-          start = "";
-          end = "";
-          break;
-        case CONST.TASK_STATUS.NEW:
-          date = "";
-          start = "";
-          end = "";
-          break;
+      var t = new Task(title);
+      t.setTask(convElementToJson(el));
+      t.updateStatusTo(status);
+      if(status === CONST.TASK_STATUS.DONE && start.length===0){
+        start = getLatestEndTime();
+        t.setStart(start);
+        t.updateSpentTime();
       }
 
-      $(el).attr(CONST.ATTR.STATUS,status);
-      $(el).attr(CONST.ATTR.DATE,date);
-      $(el).attr(CONST.ATTR.START,start);
-      $(el).attr(CONST.ATTR.END,end);
-
+      var json = t.getTask();
+      $(el).attr(CONST.ATTR.STATUS,json[CONST.TITLE.START]);
+      $(el).attr(CONST.ATTR.DATE,json[CONST.TITLE.DATE]);
+      $(el).attr(CONST.ATTR.START,json[CONST.TITLE.START]);
+      $(el).attr(CONST.ATTR.END,json[CONST.TITLE.END]);
   }
 
 
