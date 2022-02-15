@@ -58,7 +58,7 @@ var setCurrentDate = function(){
 }
 
 var setCurrentTime = function(){
-  var time = moment().format("hh:mm");
+  var time = moment().format("HH:mm");
   setValueOnSelectedCell(time);
 }
 
@@ -151,8 +151,8 @@ var highlight = function(y){
         color = 'cornflowerblue';
     }else if(start.length !== 0 && end.length !== 0){
       status = CONST.TASK_STATUS.DONE;
-      var st_dt = moment('2000-01-01T'+start,'YYYY-MM-DDThh:mm');
-      var en_dt = moment('2000-01-01T'+end,'YYYY-MM-DDThh:mm');
+      var st_dt = moment('2000-01-01T'+start,'YYYY-MM-DDTHH:mm');
+      var en_dt = moment('2000-01-01T'+end,'YYYY-MM-DDTHH:mm');
       spent_m = en_dt.diff(st_dt,'minutes');
 
       color = 'grey';

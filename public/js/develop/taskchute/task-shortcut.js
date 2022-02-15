@@ -11,10 +11,10 @@ shortcut.add("Ctrl+Alt+p",function() {
 });
 
 // Ctrl+;
-shortcut.add('Ctrl+;',function() {
+shortcut.add('Ctrl+Alt+k;',function() {
     setCurrentDate();
 });
 // Ctrl+:
-shortcut.add('Ctrl+:',function() {
+shortcut.add('Ctrl+Alt+l',function() {
     setCurrentTime();
 });

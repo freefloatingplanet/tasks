@@ -57,8 +57,8 @@ class Task {
         var start = this.#task[CONST.TITLE.START];
         var end = this.#task[CONST.TITLE.END];
         if(start.length !== 0 && end.length !== 0){
-            var st_dt = moment('2000-01-01T'+start,'YYYY-MM-DDThh:mm');
-            var en_dt = moment('2000-01-01T'+end,'YYYY-MM-DDThh:mm');
+            var st_dt = moment('2000-01-01T'+start,'YYYY-MM-DDTHH:mm');
+            var en_dt = moment('2000-01-01T'+end,'YYYY-MM-DDTHH:mm');
             var spent_m = en_dt.diff(st_dt,'minutes');
 
             this.#task[CONST.TITLE.SPENT] = spent_m;
