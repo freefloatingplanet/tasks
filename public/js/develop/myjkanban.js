@@ -206,11 +206,10 @@ var KanbanTest = new jKanban({
         }
       ]);
     var todaycal = moment().format("YYYY-MM-DD 00:00:00");
-    var today = moment().format("YYYY/MM/DD");
     pastDoneData = [];
     mergeddata.forEach(function(json){
       if(json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.DONE){
-        if([today, todaycal].includes(json[CONST.TITLE.DATE])){
+        if(todaycal === json[CONST.TITLE.DATE]){
           if(json[CONST.TITLE.PROJECT].length!==0) json['header'] = json[CONST.TITLE.PROJECT];
           if(json[CONST.TITLE.CATEGORY].length!==0){
             if(json['header']) json['header'] += '.';
@@ -309,13 +308,13 @@ var KanbanTest = new jKanban({
 
   var getLatestEndTime = function(){
     var done_task = KanbanTest.getBoardElements(CONST.BOARDID.DONE);
-    var today = moment().format('YYYY/MM/DD');
-    var todayZeroTime = moment(today+'T00:00:00','YYYY/MM/DDTHH:mm:ss');
+    var today = moment().format('YYYY-MM-DD');
+    var todayZeroTime = moment(today+'T00:00:00','YYYY-MM-DDTHH:mm:ss');
     var latestEndTime = todayZeroTime;
 
     done_task.forEach(function(task, index, array){
       if($(task).attr(CONST.ATTR.END).length>0){
-        var endTime = moment(today+'T'+$(task).attr(CONST.ATTR.END)+'00','YYYY/MM/DDTHH:mm:ss');
+        var endTime = moment(today+'T'+$(task).attr(CONST.ATTR.END)+'00','YYYY-MM-DDTHH:mm:ss');
         if(endTime.isAfter(latestEndTime)) latestEndTime = endTime;
       }
     });

@@ -1,10 +1,10 @@
 // 日付領域
 $(function() {
-  $('#today').val(moment().format("YYYY/MM/DD"));
+  $('#today').val(moment().format("YYYY-MM-DD"));
   $('#today').datepicker({
     defaultDate: new Date(), // 2020/8/5を表示
     numberOfMonths:1,                // 表示される月の数:2
-    dateFormat: 'yy/mm/dd',      // yyyy年mm月dd日
+    dateFormat: 'yy-mm-dd',      // yyyy年mm月dd日
     onClose: function(date, datepicker){
       updateDateArea();
     }
@@ -53,7 +53,7 @@ var insertFunc = function(isCopy){
 }
 
 var setCurrentDate = function(){
-  var date = moment().format("YYYY/MM/DD");
+  var date = moment().format("YYYY-MM-DD 00:00:00");
   setValueOnSelectedCell(date);
 }
 
@@ -111,16 +111,15 @@ var editioned4Table = function(instance, cell, x, y, value) {
 var updateDateArea = function(){
 
   var date = $('#today').val();
-  var format = 'YYYY/MM/DD';
-  var todaycal = moment(date, format).format(`${format}T00:00:00`);
-  var today = moment(date, format).format(format);
+  var format = 'YYYY-MM-DD';
+  var todaycal = moment(date, format).format(`${format} 00:00:00`);
   var sumPlanTime = 0;
   var sumSpentTime = 0;
 
   for(var y=0;y<table.getColumnData(CONST.CELL_NO.ID).length;y++){
 
     var date = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.DATE,y]));
-    if([today, todaycal].includes(date)){
+    if(todaycal === date){
       sumPlanTime += Number(table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.PLANM,y])));
       sumSpentTime += Number(table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.SPENT,y])));
     }
@@ -152,8 +151,8 @@ var highlight = function(y){
         color = 'cornflowerblue';
     }else if(start.length !== 0 && end.length !== 0){
       status = CONST.TASK_STATUS.DONE;
-      var st_dt = moment('2000/01/01T'+start,'YYYY/MM/DDThh:mm');
-      var en_dt = moment('2000/01/01T'+end,'YYYY/MM/DDThh:mm');
+      var st_dt = moment('2000-01-01T'+start,'YYYY-MM-DDThh:mm');
+      var en_dt = moment('2000-01-01T'+end,'YYYY-MM-DDThh:mm');
       spent_m = en_dt.diff(st_dt,'minutes');
 
       color = 'grey';
@@ -266,7 +265,7 @@ var table = "";
     columns: [
         { type: 'numeric' , title:'id'      , width:0},
         { type: 'text'    , title:'status'  , width:100},
-        { type: 'calendar', title:'date'    , width:100 ,options: { format:'YYYY/MM/DD' }},
+        { type: 'calendar', title:'date'    , width:100 ,options: { format:'YYYY-MM-DD' }},
         { type: 'text'    , title:'project' , width:100 ,align:'left' },
         { type: 'text'    , title:'category', width:100 ,align:'left' },
         { type: 'text'    , title:'title'   , width:300 ,align:'left'},

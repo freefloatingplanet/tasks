@@ -57,8 +57,8 @@ class Task {
         var start = this.#task[CONST.TITLE.START];
         var end = this.#task[CONST.TITLE.END];
         if(start.length !== 0 && end.length !== 0){
-            var st_dt = moment('2000/01/01T'+start,'YYYY/MM/DDThh:mm');
-            var en_dt = moment('2000/01/01T'+end,'YYYY/MM/DDThh:mm');
+            var st_dt = moment('2000-01-01T'+start,'YYYY-MM-DDThh:mm');
+            var en_dt = moment('2000-01-01T'+end,'YYYY-MM-DDThh:mm');
             var spent_m = en_dt.diff(st_dt,'minutes');
 
             this.#task[CONST.TITLE.SPENT] = spent_m;
@@ -75,19 +75,19 @@ class Task {
                 break;
             case CONST.TASK_STATUS.DONE:
                 this.#task[CONST.TITLE.STATUS] = CONST.TASK_STATUS.DONE;
-                this.#task[CONST.TITLE.DATE] = moment().format("YYYY/MM/DD");
+                this.#task[CONST.TITLE.DATE] = moment().format("YYYY-MM-DD 00:00:00");
                 if(this.#task[CONST.TITLE.START].lenth>0) this.#task[CONST.TITLE.START] = moment().format("HH:mm");
                 this.#task[CONST.TITLE.END] = moment().format("HH:mm");
                 break;
             case CONST.TASK_STATUS.WORK:
                 this.#task[CONST.TITLE.STATUS] = CONST.TASK_STATUS.WORK;
-                this.#task[CONST.TITLE.DATE] = moment().format("YYYY/MM/DD");
+                this.#task[CONST.TITLE.DATE] = moment().format("YYYY-MM-DD 00:00:00");
                 this.#task[CONST.TITLE.START ] = moment().format("HH:mm");
                 this.#task[CONST.TITLE.END] = "";
                 break;
             case CONST.TASK_STATUS.WAIT:
                 this.#task[CONST.TITLE.STATUS] = CONST.TASK_STATUS.WAIT;
-                this.#task[CONST.TITLE.DATE] = moment().format("YYYY/MM/DD");
+                this.#task[CONST.TITLE.DATE] = moment().format("YYYY-MM-DD 00:00:00");
                 this.#task[CONST.TITLE.START ] = "";
                 this.#task[CONST.TITLE.END] = "";
                 break;
