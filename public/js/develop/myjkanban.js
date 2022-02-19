@@ -131,7 +131,7 @@ var KanbanTest = new jKanban({
   }
 
 
-  var myjkanban_tabkanban_event = function(){
+  var visit_tabkanban_event = function(){
     //NEW
     KanbanTest.removeBoard(CONST.BOARDID.NEW);
     KanbanTest.addBoards([
@@ -246,7 +246,7 @@ var KanbanTest = new jKanban({
   
   };
  
-  var myjkanban_tabtask_event = function(){
+  var leave_tabkanban_event = function(){
     var new_task = KanbanTest.getBoardElements(CONST.BOARDID.NEW);
     var wait_task = KanbanTest.getBoardElements(CONST.BOARDID.WAIT);
     var work_task = KanbanTest.getBoardElements(CONST.BOARDID.WORK);

@@ -1,19 +1,57 @@
-$(function() {
-    let tabs = $(".tab"); // tabのクラスを全て取得し、変数tabsに配列で定義
-    $(".tab").on("click", function() { // tabをクリックしたらイベント発火
-      $(".active").removeClass("active"); // activeクラスを消す
-      $(this).addClass("active"); // クリックした箇所にactiveクラスを追加
-      const index = tabs.index(this); // クリックした箇所がタブの何番目か判定し、定数indexとして定義
-      $(".content").removeClass("show").eq(index).addClass("show"); // showクラスを消して、contentクラスのindex番目にshowクラスを追加
-    })
-  })
-
-
 var memodata = "";
 var mergeddata = [];
 var pastDoneData = [];
 
+$(function() {
+    let tabs = $(".tab"); // tabのクラスを全て取得し、変数tabsに配列で定義
+    $(".tab").on("click", function() { // tabをクリックしたらイベント発火
+      var fromTab = $(".active").attr('id');
+      $(".active").removeClass("active"); // activeクラスを消す
+      $(this).addClass("active"); // クリックした箇所にactiveクラスを追加
+      const index = tabs.index(this); // クリックした箇所がタブの何番目か判定し、定数indexとして定義
+      $(".content").removeClass("show").eq(index).addClass("show"); // showクラスを消して、contentクラスのindex番目にshowクラスを追加
+      var toTab = $(".active").attr('id');
+      switchTab(fromTab,toTab);
+    });
+    init();
+})
 
+
+var switchTab = function(fromTab,toTab){
+  fromFunction(fromTab);
+  toFunction(toTab);
+}
+
+var fromFunction = function(tabid){
+  switch(tabid){
+    case 'tabkanban':
+      leave_tabkanban_event();
+      break;
+    case 'tabtask':
+      leave_tabtask_event();
+      break;
+    case 'tabfree':
+      leave_tabfree_event();
+      break;
+  }
+  writeCSV(createCSVWriteData());
+}
+
+var toFunction = function(tabid){
+  switch(tabid){
+    case 'tabkanban':
+      visit_tabkanban_event();
+      break;
+    case 'tabtask':
+      visit_tabtask_event();
+      break;
+    case 'tabfree':
+      visit_tabfree_event();
+      break;
+  }
+}
+
+/* 
 $(function(){
   $('#tabkanban').on('click' , function(){
     taskchute_tabkanban_event();
@@ -31,13 +69,13 @@ $(function(){
 
   init();
 });
-
+*/
 var init = function(){
 
   readCSV(function(){
-    taskchute_initdata();
-    $("#memodata").val(memodata);
-    myjkanban_tabkanban_event();
+    visit_tabtask_event();
+    visit_tabfree_event();
+    visit_tabkanban_event();
   });
 }
 

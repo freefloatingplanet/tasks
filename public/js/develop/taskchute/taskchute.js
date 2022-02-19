@@ -263,12 +263,12 @@ var taskchute_initdata = function(){
   updateDateArea();
 }
 
-var taskchute_tabtask_event = function(){
+var visit_tabtask_event = function(){
   taskchute_initdata();
 };
 
 
-var taskchute_tabkanban_event = function(){
+var leave_tabtask_event = function(){
     var headers = table.getHeaders().split(',');
     var datum = table.getData(false);
     mergeddata = [];

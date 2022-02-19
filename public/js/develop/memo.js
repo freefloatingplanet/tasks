@@ -2,10 +2,10 @@ var get_memodata_fromId = function(){
     memodata = $("#memodata").val();
 }
 
-var memo_tabtask_event = function(){
+var leave_tabfree_event = function(){
     get_memodata_fromId();
 }
 
-var memo_tabkanban_event = function(){
-    get_memodata_fromId();    
+var visit_tabfree_event = function(){
+    $("#memodata").val(memodata);
 }
