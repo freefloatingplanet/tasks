@@ -7,8 +7,7 @@ $(function() {
     dateFormat: 'yy-mm-dd',      // yyyy年mm月dd日
     onClose: function(date, datepicker){
       updateDateArea();
-      const showMode = $('input:radio[name="showMode"]:checked').val();
-      changeShowMode(showMode);
+      changeShowMode();
       }
   });
 });
@@ -16,12 +15,12 @@ $(function() {
 
 $(function(){
   $('input:radio[name="showMode"]').change(function() {
-		const showMode = $('input:radio[name="showMode"]:checked').val();
-    changeShowMode(showMode);
+    changeShowMode();
 	});
 });
 
-var changeShowMode = function(showMode){
+var changeShowMode = function(){
+  const showMode = $('input:radio[name="showMode"]:checked').val();
   wbsModeOff();
   switch(showMode){
     case 'wbsmode':
@@ -258,9 +257,9 @@ var wbsModeOff = function(){
 var taskchute_initdata = function(){
   table.setData({});
   table.setData(convKeyCellNo(mergeddata));
-  openclose();
   sortbyid();
   updateDateArea();
+  changeShowMode();
 }
 
 var visit_tabtask_event = function(){
