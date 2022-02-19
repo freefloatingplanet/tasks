@@ -7,15 +7,32 @@ $(function() {
     dateFormat: 'yy-mm-dd',      // yyyy年mm月dd日
     onClose: function(date, datepicker){
       updateDateArea();
-    }
+      const showMode = $('input:radio[name="showMode"]:checked').val();
+      changeShowMode(showMode);
+      }
   });
 });
 
+
 $(function(){
-  $('#wbsmode').change(function() {
-    wbsMode();
-  });
+  $('input:radio[name="showMode"]').change(function() {
+		const showMode = $('input:radio[name="showMode"]:checked').val();
+    changeShowMode(showMode);
+	});
 });
+
+var changeShowMode = function(showMode){
+  wbsModeOff();
+  switch(showMode){
+    case 'wbsmode':
+      wbsModeOn();
+      break;
+    case 'taskchutemode':
+      taskchuteModeOn();
+      break;
+  }
+  openclose();
+}
 
 
 // テーブル領域
@@ -163,6 +180,7 @@ var highlight = function(y){
     }
 
     for(var x=CONST.CELL_NO.ID;x<=table.getRowData(y).length;x++){
+      table.setStyle(jexcel.getColumnNameFromId([x,y]),'background-color','white');
       table.setStyle(jexcel.getColumnNameFromId([x,y]),'background-color',color);
     }
     table.setValueFromCoords(CONST.CELL_NO.STATUS,y,status,true);
@@ -184,16 +202,27 @@ var sortbyid = function(){
   table.orderBy(CONST.CELL_NO.ID,false);
 }
 
-var wbsMode = function(){
-    // prop()でチェックの状態を取得
-    var wbsModeIsOn = $('#wbsmode').prop('checked');
+var taskchuteModeOn = function(){
+  table.orderBy(CONST.CELL_NO.END,false);
+  table.orderBy(CONST.CELL_NO.DATE,false);
 
-    if(wbsModeIsOn){
-      wbsModeOn();
-    }else{
-      wbsModeOff();
+  var date = $('#today').val();
+  var format = 'YYYY-MM-DD';
+  var todaycal = moment(date, format).format(`${format} 00:00:00`);
+  var insertrownum = 0;
+
+  for(var row=0;row<table.getColumnData(CONST.CELL_NO.ID).length;row++){
+
+    var date = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.DATE,row]));
+    if(todaycal === date){
+      var array = table.getRowData(row);
+      table.insertRow(array,insertrownum,true);
+      table.deleteRow(row+1,1);
+      insertrownum++;
     }
+  }
 }
+
 
 var wbsModeOn = function(){
   table.orderBy(CONST.CELL_NO.CATEGORY,false);
