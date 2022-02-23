@@ -2,76 +2,67 @@ const redmine = require('./redmine-api-base');
 
 let redmineWrapper = {};
 
-redmineWrapper.getIssues = function(queryJson){
-  redmine.issues(queryJson,(error,data) => {
-    if(error) return error;
-    else return data.issues;
-  });
+redmineWrapper.getIssues = (queryJson) => {
+  return new Promise((resolve, reject) => {
+    redmine.issues(queryJson,(error,data) => {
+      console.log(data);
+      if(error) reject(error);
+      else resolve(data.issues);
+    })
+  })
 }
 
-redmineWrapper.createTimeEntry = function(createJson){
-  redmine.create_time_entry({
-    "time_entry": createJson
-  },(error,data) => {
-    if(error) return error;
-    else return {"result" : "ok"};
-  });
-}
-
-redmineWrapper.updateIssue = function(id,updateJson){
-  redmine.update_issue(
-    id,
-    {
-    "issue":updateJson
-  }, (error, data) => {
-    if(error) return error;
-    else return {"result" : "ok"};  
-  });
-}
-
-module.exports = redmineWrapper;
-
-// Issue を5件取得する
 /*
-redmine.issues({
-  limit: 5
-}, (error, data) => {
-  if(error) throw error;
-  
-  // JSON を2スペースで整形して表示する
-  data.issues.forEach((issue) => {
-    console.log(JSON.stringify(issue, null, '  '));
-  });
-});
-*/
-/*
-redmine.create_time_entry({
   "time_entry":{
     "issue_id": "17",
-    "spent_on": "2022-02-22"  ,
+    "spent_on": "2022-02-23"  ,
     "hours": 1.0,
-    "comments": "abcd",
-    "activity_id": "7",
-    "user_id": 5
+    "comments": "abcd"
   }
-}, (error, data) => {
-  if(error) throw error;
-
-  console.log('ok');
-
-});
 */
+redmineWrapper.createTimeEntry = (createJson) => {
+  return new Promise((resolve, reject) => {
+    var json = {
+      "issue_id": createJson.issue_id,
+      "spent_on": createJson.date ,
+      "hours": Number(createJson.spent_m)/60,
+      "comments": createJson.title
+    };
+    redmine.create_time_entry({
+      "time_entry": json
+    },(error,data) => {
+      if(error) reject(error);
+      else resolve(createJson);
+    });
+    
+  })
 
-redmine.update_issue(
-  17,
-  {
+}
+
+/*
   "issue":{
     "status_id": "3",
     "done_ratio": 100,
   }
-}, (error, data) => {
-  if(error) throw error;
+*/
+redmineWrapper.updateIssue = (updateJson) => {
+  return new Promise((resolve, reject) => {
+    var json = {
+      "status_id": updateJson.status_id,
+      "done_ratio": updateJson.done_ratio
+    }  ;
+    redmine.update_issue(
+      updateJson.issue_id,
+      {
+      "issue":json
+    },(error, data) => {
+      if(error) reject(error);
+      else resolve(updateJson);  
+    });
+  
+  })
+}
+module.exports = redmineWrapper;
 
-  console.log('ok');
 
-});
+

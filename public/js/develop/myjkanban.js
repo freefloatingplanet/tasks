@@ -299,6 +299,9 @@ var KanbanTest = new jKanban({
       [CONST.TITLE.SPENT]:   $(task).attr(CONST.ATTR.SPENT),
       [CONST.TITLE.START]:   $(task).attr(CONST.ATTR.START),
       [CONST.TITLE.END]:     $(task).attr(CONST.ATTR.END),
+      [CONST.TITLE.ISSUEID]: $(task).attr(CONST.ATTR.ISSUEID),
+      [CONST.TITLE.DONERATIO]:$(task).attr(CONST.ATTR.DONERATIO),
+      [CONST.TITLE.REGIST]:  $(task).attr(CONST.ATTR.REGIST),
     };
 
     if(header.length !== 0) json['header'] = header;

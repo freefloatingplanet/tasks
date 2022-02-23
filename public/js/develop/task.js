@@ -15,6 +15,9 @@ class Task {
             [CONST.TITLE.SPENT]:   "",
             [CONST.TITLE.START]:   "",
             [CONST.TITLE.END]:     "",
+            [CONST.TITLE.ISSUEID]:  "",
+            [CONST.TITLE.DONERATIO]:"",
+            [CONST.TITLE.REGIST]:   ""
         };
     }
 
@@ -28,6 +31,20 @@ class Task {
 
     setStart(start){
         this.#task[CONST.TITLE.START] = start;
+    }
+
+    setDate(date){
+        this.#task[CONST.TITLE.DATE] = date;
+    }
+    setProject(project){
+        this.#task[CONST.TITLE.PROJECT] = project;
+    }
+    setPlanH(planh){
+        this.#task[CONST.TITLE.PLANH] = planh;
+        this.#task[CONST.TITLE.PLANM] = Number(planh)*60;
+    }
+    setIssueId(issueid){
+        this.#task[CONST.TITLE.ISSUEID] = issueid;
     }
 
     getStart(){
@@ -48,6 +65,7 @@ class Task {
         this.#task[CONST.TITLE.PLANH] = "0";
         this.#task[CONST.TITLE.PLANM] = "0";
         this.#task[CONST.TITLE.SPENT] = "0";
+        this.#task[CONST.TITLE.DONERATIO] = 0;
 
         this.updateStatusTo(status);
 

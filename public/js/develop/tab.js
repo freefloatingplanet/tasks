@@ -51,25 +51,6 @@ var toFunction = function(tabid){
   }
 }
 
-/* 
-$(function(){
-  $('#tabkanban').on('click' , function(){
-    taskchute_tabkanban_event();
-    myjkanban_tabkanban_event();
-    memo_tabkanban_event();
-    writeCSV(createCSVWriteData());
-
-  });
-  $('#tabtask').on('click' , function(){
-    myjkanban_tabtask_event();
-    taskchute_tabtask_event();
-    memo_tabtask_event();
-    writeCSV(createCSVWriteData());
-  });
-
-  init();
-});
-*/
 var init = function(){
 
   readCSV(function(){
@@ -120,7 +101,7 @@ var readCSV = function(callback){
 
 var convKeyCellNo = function(keyTitleData){
 
-  var output = []
+  var output = [];
 
   keyTitleData.forEach(function(task){
     var json = {
@@ -134,7 +115,10 @@ var convKeyCellNo = function(keyTitleData){
       [CONST.CELL_NO.PLANM]:   task[CONST.TITLE.PLANM],
       [CONST.CELL_NO.SPENT]:   task[CONST.TITLE.SPENT],
       [CONST.CELL_NO.START]:   task[CONST.TITLE.START],
-      [CONST.CELL_NO.END]:     task[CONST.TITLE.END]
+      [CONST.CELL_NO.END]:     task[CONST.TITLE.END],
+      [CONST.CELL_NO.ISSUEID]: task[CONST.TITLE.ISSUEID],
+      [CONST.CELL_NO.DONERATIO]:task[CONST.TITLE.DONERATIO],
+      [CONST.CELL_NO.REGIST]:  task[CONST.TITLE.REGIST]
     };
     output.push(json);
   });

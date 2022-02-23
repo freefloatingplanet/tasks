@@ -280,28 +280,82 @@ var leave_tabtask_event = function(){
     });
 }
 
+// redmineへの更新
+var registToRedmine = function(callback){
+  for(var y=0;y<table.getColumnData(CONST.CELL_NO.ID).length;y++){
+    var status = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.STATUS,y]));
+    var issue_id = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.ISSUEID,y]));
+    var regist = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.REGIST,y]));
+    if(status === CONST.TASK_STATUS.DONE && issue_id.length > 0 && regist.length === 0){
+      var json = convertTable2TaskJson(y)
+      json['rownum'] = y;
+      callback(json)
+      .done(function(data){
+        if('rownum' in data) table.setValueFromCoords(CONST.CELL_NO.REGIST,data['rownum'],"o",true);
+      }).fail(function(data){
+        console.log(data);
+      });
+    }
+  }
+}
+// redmineからタスクの取得
+var fetchRedmine = function(callback){
+  callback({limit:5})
+  .done(function(issues){
+    issues.forEach(function(issue){
+      var task = new Task(issue.subject);
+      task.create(CONST.TASK_STATUS.NEW);
+      task.setDate(issue.start_date);
+      task.setProject(issue.project.name);
+      task.setPlanH(issue.estimated_hours);
+      task.setIssueId(issue.id)
+      var json = task.getTask();
+      table.insertRow(convKeyCellNo([json]));
+    })
+  })
+  .fail(function(data){
+    console.log(data);
+  });
+
+
+}
+
+var convertTable2TaskJson = function(rownum){
+  var headers = table.getHeaders().split(',');
+  var data = table.getRowData(rownum);
+
+  var json = {};
+  for(var i=0; i< data.length; i ++){
+    json[headers[i]]=data[i];
+  }
+  return json;
+}
+
 var table = "";
 
 (function(){
   var data = [
-    ['11000','working','2019-02-12','projctX','coding','Jazz', '1','60','60','12:00',  '13:00'],
-    ['21000','done','2018-07-11','projctY','design','Civic', '2','120','60','13:00',  '14:00'],
+    ['11000','working','2019-02-12','projctX','coding','Jazz', '1','60','60','12:00',  '13:00','17','100','o'],
+    ['21000','done','2018-07-11','projctY','design','Civic', '2','120','60','13:00',  '14:00','16','0',''],
   ];
   
   table = jspreadsheet(document.getElementById('spreadsheet'), {
     data:data,
     columns: [
-        { type: 'numeric' , title:'id'      , width:0},
-        { type: 'text'    , title:'status'  , width:100},
-        { type: 'calendar', title:'date'    , width:100 ,options: { format:'YYYY-MM-DD' }},
-        { type: 'text'    , title:'project' , width:100 ,align:'left' },
-        { type: 'text'    , title:'category', width:100 ,align:'left' },
-        { type: 'text'    , title:'title'   , width:300 ,align:'left'},
-        { type: 'numeric' , title:'plan_h'  , width:70},
-        { type: 'numeric' , title:'plan_m'  , width:70},
-        { type: 'numeric' , title:'spent_m' , width:70},
-        { type: 'text'    , title:'start'   , width:100 },
-        { type: 'text'    , title:'end'     , width:100 },
+        { type: 'numeric' , title:CONST.TITLE.ID      , width:0},
+        { type: 'text'    , title:CONST.TITLE.STATUS  , width:100},
+        { type: 'calendar', title:CONST.TITLE.DATE    , width:100 ,options: { format:'YYYY-MM-DD' }},
+        { type: 'text'    , title:CONST.TITLE.PROJECT , width:100 ,align:'left' },
+        { type: 'text'    , title:CONST.TITLE.CATEGORY, width:100 ,align:'left' },
+        { type: 'text'    , title:CONST.TITLE.TITLE   , width:300 ,align:'left'},
+        { type: 'numeric' , title:CONST.TITLE.PLANH   , width:70},
+        { type: 'numeric' , title:CONST.TITLE.PLANM   , width:70},
+        { type: 'numeric' , title:CONST.TITLE.SPENT   , width:70},
+        { type: 'text'    , title:CONST.TITLE.START   , width:70 },
+        { type: 'text'    , title:CONST.TITLE.END     , width:70 },
+        { type: 'text'    , title:CONST.TITLE.ISSUEID , width:70 },
+        { type: 'numeric' , title:CONST.TITLE.DONERATIO, width:80 },
+        { type: 'text'    , title:CONST.TITLE.REGIST  , width:70 },
      ],
      oneditionend : editioned4Table,
      oninsertrow : insertRow4Table,

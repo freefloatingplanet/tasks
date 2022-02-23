@@ -10,7 +10,10 @@ const CONST = {
         PLANM: 7,
         SPENT: 8,
         START: 9,
-        END: 10
+        END: 10,
+        ISSUEID: 11,
+        DONERATIO: 12,
+        REGIST: 13
     },
     TITLE:{
         ID:       'id',
@@ -23,7 +26,10 @@ const CONST = {
         PLANM:    'plan_m',
         SPENT:    'spent_m',
         START:    'start',
-        END:      'end'
+        END:      'end',
+        ISSUEID:  'issue_id',
+        DONERATIO:'done_ratio',
+        REGIST:   'regist'
     },
     ATTR:{
         ID:       'data-eid',
@@ -36,7 +42,10 @@ const CONST = {
         PLANM:    'data-plan_m',
         SPENT:    'data-spent_m',
         START:    'data-start',
-        END:      'data-end'
+        END:      'data-end',
+        ISSUEID:  'data-issue_id',
+        DONERATIO:'data-done_ratio',
+        REGIST:   'data-regist'
     },
     TASK_STATUS:{
         NEW: 'new',
