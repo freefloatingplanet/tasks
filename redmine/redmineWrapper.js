@@ -47,10 +47,14 @@ redmineWrapper.createTimeEntry = (createJson) => {
 */
 redmineWrapper.updateIssue = (updateJson) => {
   return new Promise((resolve, reject) => {
+    
     var json = {
       "status_id": updateJson.status_id,
       "done_ratio": updateJson.done_ratio
-    }  ;
+    };
+    if(json.done_ratio === 100) json['status_id'] = 3;
+    else if(json.done_ratio === 0) json['status_id'] = 1;
+
     redmine.update_issue(
       updateJson.issue_id,
       {
