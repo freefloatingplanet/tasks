@@ -157,6 +157,7 @@ var highlight = function(y){
     var end = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.END,y]));
     var dt = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.DATE,y]));
     var st = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.STATUS,y]));
+    var ratio = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.DONERATIO,y]));
     var spent_m = "";
 
     var status = CONST.TASK_STATUS.NEW;
@@ -170,6 +171,7 @@ var highlight = function(y){
       var st_dt = moment('2000-01-01T'+start,'YYYY-MM-DDTHH:mm');
       var en_dt = moment('2000-01-01T'+end,'YYYY-MM-DDTHH:mm');
       spent_m = en_dt.diff(st_dt,'minutes');
+      ratio = 100;
 
       color = 'grey';
     }else if(start.length !== 0 ){
@@ -184,6 +186,7 @@ var highlight = function(y){
     }
     table.setValueFromCoords(CONST.CELL_NO.STATUS,y,status,true);
     table.setValueFromCoords(CONST.CELL_NO.SPENT,y,spent_m,true);
+    table.setValueFromCoords(CONST.CELL_NO.DONERATIO,y,ratio,true);
 }
 
 var updateid = function(){
@@ -310,7 +313,7 @@ var fetchRedmine = function(callback){
       task.setPlanH(issue.estimated_hours);
       task.setIssueId(issue.id)
       var json = task.getTask();
-      table.insertRow(convKeyCellNo([json]));
+      table.insertRow(convKeyArray(json));
     })
   })
   .fail(function(data){

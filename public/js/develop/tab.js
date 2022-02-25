@@ -126,3 +126,25 @@ var convKeyCellNo = function(keyTitleData){
   return output;
 
 }
+
+var convKeyArray = function(task){
+
+  var array = [
+    task[CONST.TITLE.ID],
+    task[CONST.TITLE.STATUS],
+    task[CONST.TITLE.DATE],
+    task[CONST.TITLE.PROJECT],
+    task[CONST.TITLE.CATEGORY],
+    task[CONST.TITLE.TITLE],
+    task[CONST.TITLE.PLANH],
+    task[CONST.TITLE.PLANM],
+    task[CONST.TITLE.SPENT],
+    task[CONST.TITLE.START],
+    task[CONST.TITLE.END],
+    task[CONST.TITLE.ISSUEID],
+    task[CONST.TITLE.DONERATIO],
+    task[CONST.TITLE.REGIST]
+  ];
+  return array;
+
+}
