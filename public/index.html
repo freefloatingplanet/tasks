@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/develop/myjkanban.css" />
     <link rel="stylesheet" href="css/develop/mytab.css" />
     <link rel="stylesheet" href="css/develop/taskchute.css" />
+    <link rel="stylesheet" href="css/develop/setting.css" />
 
     <script src="https://bossanova.uk/jspreadsheet/v4/jexcel.js"></script>
     <script src="https://jsuites.net/v4/jsuites.js"></script>
@@ -31,6 +32,8 @@
     <script src="js/library/shortcut.js"></script>
     
     <script src="js/develop/comliteral.js"></script>
+    <script src="js/develop/setting.js"></script>
+
 
     <input type="hidden" id="jsondata"></input>
     
@@ -44,12 +47,17 @@
       <div id=tabkanban class="tab">
         カンバン
       </div>
+      <div id=tabsetting class="tab">
+        設定
+      </div>
     </div>
     <div class="content-area">
+      <!--フリー-->
       <div class="content">
         <textarea name="memodata" id="memodata" rows="50" cols="150"></textarea>
         <script src="js/develop/memo.js"></script>
       </div>
+      <!--タスク一覧-->
       <div class="content show">
         <table class="task-table">
           <tr>
@@ -76,11 +84,30 @@
         <script src="js/develop/taskchute/task-shortcut.js"></script>
         <script src="js/develop/taskchute/task-redmine.js"></script>
       </div>
+      <!--カンバン-->
       <div class="content">
         <div id="myKanban"></div>    
         <script src="js/library/jkanban.js"></script>
         <script src="js/develop/myjkanban.js"></script>
     
+      </div>
+      <!--設定-->
+      <div class="content">
+        <table class="set-table">
+          <h1>Redmine連携</h1>
+          <tr>
+            <th class="set-th">連携</th> <td class="set-td"><label><input type="checkbox" id="setting-redmine-enabled" name="redmine-enabled" value="enabled">有効にする</label></td>
+          </tr>
+          <tr>
+            <th class="set-th">Redmine URL</th> <td class="set-td"><input type="text" id="setting-redmine-child-baseurl" class="set-text"></td>
+          </tr>
+          <tr>
+              <th class="set-th">API Key</th> <td class="set-td"><input type="text" id="setting-redmine-child-apikey" class="set-text"></td>
+          </tr>
+          <tr>
+            <th class="set-th">検索条件(optional)</th> <td class="set-td"><input type="text" id="setting-redmine-child-query" class="set-text"></td>
+          </tr>
+    </table>
       </div>
     </div>
 

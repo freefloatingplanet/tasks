@@ -1,6 +1,7 @@
 var memodata = "";
 var mergeddata = [];
 var pastDoneData = [];
+var settingData = {};
 
 $(function() {
     let tabs = $(".tab"); // tabのクラスを全て取得し、変数tabsに配列で定義
@@ -33,6 +34,9 @@ var fromFunction = function(tabid){
     case 'tabfree':
       leave_tabfree_event();
       break;
+    case 'tabsetting':
+      leave_tabsetting_event();
+      break;
   }
   writeCSV(createCSVWriteData());
 }
@@ -54,6 +58,7 @@ var toFunction = function(tabid){
 var init = function(){
 
   readCSV(function(){
+    visit_tabsetting_event();
     visit_tabtask_event();
     visit_tabfree_event();
     visit_tabkanban_event();
@@ -66,6 +71,7 @@ var createCSVWriteData = function(){
 
   output.task = mergeddata;
   output.memo = memodata;
+  output.setting = settingData;
   return output;
 
 }
@@ -93,6 +99,7 @@ var readCSV = function(callback){
     console.log(data);
     mergeddata = data.task;
     memodata = data.memo;
+    settingData = data.setting;
     callback();
   })).fail((data) => {
     console.log('cannot access url');

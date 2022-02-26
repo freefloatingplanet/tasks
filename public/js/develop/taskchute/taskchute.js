@@ -263,6 +263,7 @@ var taskchute_initdata = function(){
   sortbyid();
   updateDateArea();
   changeShowMode();
+  checkOn_redmine_enable();
 }
 
 var visit_tabtask_event = function(){
@@ -281,6 +282,20 @@ var leave_tabtask_event = function(){
         }
         mergeddata.push(json);
     });
+}
+
+// redmine連携
+var onOffRedmine = function(isEnabled){
+  if(isEnabled){
+    table.showColumn(CONST.CELL_NO.ISSUEID);
+    table.showColumn(CONST.CELL_NO.DONERATIO);
+    table.showColumn(CONST.CELL_NO.REGIST);
+
+  }else{
+    table.hideColumn(CONST.CELL_NO.ISSUEID);
+    table.hideColumn(CONST.CELL_NO.DONERATIO);
+    table.hideColumn(CONST.CELL_NO.REGIST);
+  }
 }
 
 // redmineへの更新
@@ -303,7 +318,12 @@ var registToRedmine = function(callback){
 }
 // redmineからタスクの取得
 var fetchRedmine = function(callback){
-  callback({limit:5})
+  var queryJson = {
+    child_id : "!*",
+    assigned_to_id : "me",
+    status_id: "open"
+  };
+  callback(queryJson)
   .done(function(issues){
     issues.forEach(function(issue){
       var task = new Task(issue.subject);

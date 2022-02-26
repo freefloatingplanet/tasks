@@ -1,0 +1,22 @@
+.set-table {
+    border-collapse: collapse;
+    text-align: center;
+}
+
+.set-td {
+    padding: 5px;
+    border: 1px solid #333;
+    width: 700px;
+}
+
+.set-th {
+    padding: 5px;
+    border: 1px solid #333;
+    background-color: #2c88d9;
+    color: #FFF;
+}
+
+.set-text {
+    margin-left: 5px;
+    width: 98%;
+}
