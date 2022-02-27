@@ -105,6 +105,7 @@ var editioned4Table = function(instance, cell, x, y, value) {
   var cellName = table.getHeader(x);
   switch(cellName){
     case CONST.TITLE.END:
+      createRepeatTask();
       openclose();
       updateid();
       break;
@@ -353,6 +354,32 @@ var convertTable2TaskJson = function(rownum){
   }
   return json;
 }
+
+var createRepeatTask = function(){
+  var selectedRows = table.getSelectedRows(true);
+  if(selectedRows.length===1){
+    var row = selectedRows[0];
+    var array = [];
+    array = table.getRowData(row);
+
+    if(array[CONST.CELL_NO.TITLE].indexOf('repeats')>0){
+      var message = "何日後にタスクを作成しますか？";
+      var value = 7;
+      offsetDay = prompt(message,value);
+    
+      if(offsetDay > 0){
+        array[CONST.CELL_NO.DATE] = moment().add(offsetDay, 'd').format('YYYY-MM-DD');
+        array[CONST.CELL_NO.SPENT] = 0;
+        array[CONST.CELL_NO.START] = "";
+        array[CONST.CELL_NO.END] = "";
+        array[CONST.CELL_NO.DONERATIO] = 0;
+        array[CONST.CELL_NO.REGIST] = "";
+        table.insertRow(array,Number(row));    
+      }
+    }
+  }
+}
+
 
 var table = "";
 
