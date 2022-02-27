@@ -263,7 +263,8 @@ var taskchute_initdata = function(){
   sortbyid();
   updateDateArea();
   changeShowMode();
-  checkOn_redmine_enable();
+  var isEnabled = settingData['setting-redmine-enabled'];
+  onOffRedmine(isEnabled);
 }
 
 var visit_tabtask_event = function(){

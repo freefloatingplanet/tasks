@@ -1,8 +1,8 @@
 $(function(){
-    checkOn_redmine_enable();
+    redmine_enable_event();
   });
 
-checkOn_redmine_enable = function(){
+redmine_enable_event = function(){
     $('input:checkbox[name="redmine-enabled"]').change(function() {
         const isEnabled = $('input:checkbox[name="redmine-enabled"]').prop('checked');
         onOffRedmine(isEnabled);
