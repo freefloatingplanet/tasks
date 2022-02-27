@@ -1,5 +1,6 @@
 $(function(){
     redmine_enable_event();
+    redmine_testFetch_event();
   });
 
 redmine_enable_event = function(){
@@ -8,6 +9,12 @@ redmine_enable_event = function(){
         onOffRedmine(isEnabled);
         $('[id*="setting-redmine-child"]').prop('readonly',!isEnabled);
     });
+}
+
+redmine_testFetch_event = function(){
+    $('#testFetch').click(function(){
+        testFetchRedmine(getIssues);
+    })
 }
 
 leave_tabsetting_event = function(){
@@ -31,3 +38,24 @@ visit_tabsetting_event = function(){
         }
     });
 }
+
+// redmineからタスクの取得
+var testFetchRedmine = function(callback){
+    var json = {};
+    json['query'] = settingData['setting-redmine-child-query'];
+    json['setting'] = settingData;
+    callback(json)
+    .done(function(issues){
+        var output = ""; 
+        issues.forEach(function(is){
+            var array = [is.id,is.project.name,is.status.name,is.assigned_to.name,is.subject,is.start_date,is.due_date];
+            array.join(',')
+            output += array + '\n';
+        })
+        alert(output);
+    })
+    .fail(function(data){
+      alert(data);
+    })
+   }
+  
