@@ -308,6 +308,7 @@ var registToRedmine = function(callback){
     if(status === CONST.TASK_STATUS.DONE && issue_id.length > 0 && regist.length === 0){
       var json = convertTable2TaskJson(y)
       json['rownum'] = y;
+      json['setting'] = settingData['setting'];
       callback(json)
       .done(function(data){
         if('rownum' in data) table.setValueFromCoords(CONST.CELL_NO.REGIST,data['rownum'],"o",true);
@@ -319,12 +320,10 @@ var registToRedmine = function(callback){
 }
 // redmineからタスクの取得
 var fetchRedmine = function(callback){
-  var queryJson = {
-    child_id : "!*",
-    assigned_to_id : "me",
-    status_id: "open"
-  };
-  callback(queryJson)
+  var json = {};
+  json['query'] = settingData['setting-redmine-child-query'];
+  json['setting'] = settingData;
+  callback(json)
   .done(function(issues){
     issues.forEach(function(issue){
       var task = new Task(issue.subject);

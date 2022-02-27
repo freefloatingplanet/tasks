@@ -1,10 +1,24 @@
-const redmine = require('./redmine-api-base');
+const Redmine = require('node-redmine');
+
 
 let redmineWrapper = {};
 
+redmineApiBase = function(settingJson){
+  console.log(settingJson);
+  var hostName = settingJson['setting-redmine-child-baseurl'];
+  var config = {
+    apiKey: settingJson['setting-redmine-child-apikey']
+  }
+  var redmine = new Redmine(hostName, config);
+
+  return redmine;
+
+}
+
 redmineWrapper.getIssues = (queryJson) => {
   return new Promise((resolve, reject) => {
-    redmine.issues(queryJson,(error,data) => {
+    var redmine = redmineApiBase(queryJson.setting)
+    redmine.issues(queryJson.query,(error,data) => {
       console.log(data);
       if(error) reject(error);
       else resolve(data.issues);
@@ -28,6 +42,7 @@ redmineWrapper.createTimeEntry = (createJson) => {
       "hours": Number(createJson.spent_m)/60,
       "comments": createJson.title
     };
+    var redmine = redmineApiBase(createJson.setting);
     redmine.create_time_entry({
       "time_entry": json
     },(error,data) => {
@@ -55,6 +70,7 @@ redmineWrapper.updateIssue = (updateJson) => {
     if(json.done_ratio === 100) json['status_id'] = 3;
     else if(json.done_ratio === 0) json['status_id'] = 1;
 
+    var redmine = redmineApiBase(updateJson.setting);
     redmine.update_issue(
       updateJson.issue_id,
       {
