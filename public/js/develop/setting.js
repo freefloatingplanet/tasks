@@ -13,6 +13,7 @@ redmine_enable_event = function(){
 
 redmine_testFetch_event = function(){
     $('#testFetch').click(function(){
+        leave_tabsetting_event();
         testFetchRedmine(getIssues);
     })
 }
@@ -44,6 +45,12 @@ var testFetchRedmine = function(callback){
     var json = {};
     json['query'] = settingData['setting-redmine-child-query'];
     json['setting'] = settingData;
+    try{
+        JSON.parse(json.query);
+    }catch(e){
+        alert(e);
+        return false;
+    }
     callback(json)
     .done(function(issues){
         var output = ""; 

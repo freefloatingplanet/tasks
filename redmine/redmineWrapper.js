@@ -4,7 +4,6 @@ const Redmine = require('node-redmine');
 let redmineWrapper = {};
 
 redmineApiBase = function(settingJson){
-  console.log(settingJson);
   var hostName = settingJson['setting-redmine-child-baseurl'];
   var config = {
     apiKey: settingJson['setting-redmine-child-apikey']
@@ -17,9 +16,16 @@ redmineApiBase = function(settingJson){
 
 redmineWrapper.getIssues = (queryJson) => {
   return new Promise((resolve, reject) => {
-    var redmine = redmineApiBase(queryJson.setting)
-    redmine.issues(queryJson.query,(error,data) => {
-      console.log(data);
+    console.log(queryJson);
+    var redmine = redmineApiBase(queryJson.setting);
+    var toString = Object.prototype.toString;
+    try{
+      var query = JSON.parse(queryJson.query);
+    } catch(e){
+      console.error(e);
+    }
+    redmine.issues(query,(error,data) => {
+      console.log(data.issues);
       if(error) reject(error);
       else resolve(data.issues);
     })

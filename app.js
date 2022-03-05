@@ -52,6 +52,7 @@ app.post('/csvread/',(req,res) => {
 
 // チケット取得
 app.post('/get-issues/',(req,res) => {
+  console.log(req.body);
   redmineWrapper.getIssues(req.body)
     .then(data => {
       res.send(data);    
