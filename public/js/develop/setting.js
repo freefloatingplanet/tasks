@@ -55,7 +55,17 @@ var testFetchRedmine = function(callback){
     .done(function(issues){
         var output = ""; 
         issues.forEach(function(is){
-            var array = [is.id,is.project.name,is.status.name,is.assigned_to.name,is.subject,is.start_date,is.due_date];
+            var array = [];
+            array.push(is.id               || null);
+            array.push(is.project.name     || null);
+            if(is.status.name) array.push(is.status.name);
+            else array.push(null);
+            if(is.assigned_to) array.push(is.assigned_to.name);
+            else array.push(null);
+            array.push(is.subject          || null);
+            array.push(is.start_date       || null);
+            array.push(is.due_date         || null);
+//            var array = [is.id,is.project.name,is.status.name,is.assigned_to.name,is.subject,is.start_date,is.due_date];
             array.join(',')
             output += array + '\n';
         })
