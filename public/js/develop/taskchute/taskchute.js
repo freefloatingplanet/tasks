@@ -315,9 +315,12 @@ var registToRedmine = function(callback){
         if('rownum' in data) table.setValueFromCoords(CONST.CELL_NO.REGIST,data['rownum'],"o",true);
       }).fail(function(data){
         console.log(data);
+        alert(data);
       });
     }
   }
+  alert("更新が終了しました。");
+
 }
 // redmineからタスクの取得
 var fetchRedmine = function(callback){
@@ -336,9 +339,11 @@ var fetchRedmine = function(callback){
       var json = task.getTask();
       table.insertRow(convKeyArray(json));
     })
+    alert("取得が終了しました。");
   })
   .fail(function(data){
     console.log(data);
+    alert(data);
   });
 
 
