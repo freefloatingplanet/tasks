@@ -327,12 +327,12 @@ var fetchRedmine = function(callback){
   callback(json)
   .done(function(issues){
     issues.forEach(function(issue){
-      var task = new Task(issue.subject);
+      var task = new Task(issue.subject || "");
       task.create(CONST.TASK_STATUS.NEW);
-      task.setDate(issue.start_date);
-      task.setProject(issue.project.name);
-      task.setPlanH(issue.estimated_hours);
-      task.setIssueId(issue.id)
+      task.setDate(issue.start_date || "");
+      if(issue.project) task.setProject(issue.project.name);
+      task.setPlanH(issue.estimated_hours || "");
+      task.setIssueId(issue.id || "")
       var json = task.getTask();
       table.insertRow(convKeyArray(json));
     })
