@@ -161,7 +161,12 @@ var highlight = function(y){
     var ratio = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.DONERATIO,y]));
     var spent_m = "";
 
-    var status = CONST.TASK_STATUS.NEW;
+    var today = $('#today').val();
+    var format = 'YYYY-MM-DD';
+    var todaycal = moment(today, format).format(`${format} 00:00:00`);
+  
+
+    var status = st;
     var color = 'white';
 
     if(st === CONST.TASK_STATUS.PEND){
@@ -177,7 +182,7 @@ var highlight = function(y){
       color = 'grey';
     }else if(start.length !== 0 ){
       status = CONST.TASK_STATUS.WORK;
-    }else if(dt.length !==0 ){
+    }else if(status === CONST.TASK_STATUS.WAIT || dt === todaycal){
       status = CONST.TASK_STATUS.WAIT;
     }
 
