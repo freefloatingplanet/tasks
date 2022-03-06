@@ -105,10 +105,13 @@ var editioned4Table = function(instance, cell, x, y, value) {
   var cellName = table.getHeader(x);
   switch(cellName){
     case CONST.TITLE.END:
-      createRepeatTask();
+      var end = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.END,y]));
+      if(end.length > 0 ){
+        createRepeatTask();
+      }
       openclose();
-      updateid();
-      break;
+      updateid();  
+    break;
     case CONST.TITLE.PLANH:
       var planh = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.PLANH,y]));
       var planm = planh * 60;
@@ -370,7 +373,7 @@ var createRepeatTask = function(){
   if(selectedRows.length===1){
     var row = selectedRows[0];
     var array = [];
-    array = table.getRowData(row);
+    array = JSON.parse(JSON.stringify(table.getRowData(row)));
 
     if(array[CONST.CELL_NO.TITLE].indexOf('repeats')>0){
       var message = "何日後にタスクを作成しますか？";
@@ -378,6 +381,7 @@ var createRepeatTask = function(){
       offsetDay = prompt(message,value);
     
       if(offsetDay > 0){
+        array[CONST.CELL_NO.STATUS] = CONST.TASK_STATUS.NEW;
         array[CONST.CELL_NO.DATE] = moment().add(offsetDay, 'd').format('YYYY-MM-DD');
         array[CONST.CELL_NO.SPENT] = 0;
         array[CONST.CELL_NO.START] = "";
