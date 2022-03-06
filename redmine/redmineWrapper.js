@@ -25,13 +25,36 @@ redmineWrapper.getIssues = (queryJson) => {
       console.error(e);
     }
     redmine.issues(query,(error,data) => {
-      console.log(data.issues);
+      console.log(data);
       if(error) reject(error);
-      else resolve(data.issues);
+      else resolve(data);
     })
   })
 }
+/*うまくいっていない
+redmineWrapper.getAllIssues = (queryJson) => {
+  redmineWrapper.getIssues(queryJson)
+    .then(data => {
+      const limit = 100;
+      const pageNo = Math.ceil(data.total_count / limit);
+      const pageArray = [...Array(pageNo).keys()].map(i => i+1);
+      queryJson.query.limit = limit;
+      let issues = [];
+      let promiselist = [];
 
+      pageArray.map((page) => {
+        queryJson.query.page = page;
+        promiselist.push(redmineWrapper.getIssues(queryJson));
+      })
+
+      Promise.all(promiselist).then((results) => {
+        console.log(results);
+
+      })
+
+    })
+  }
+  */
 /*
   "time_entry":{
     "issue_id": "17",

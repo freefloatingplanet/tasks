@@ -52,9 +52,9 @@ var testFetchRedmine = function(callback){
         return false;
     }
     callback(json)
-    .done(function(issues){
+    .done(function(data){
         var output = ""; 
-        issues.forEach(function(is){
+        data.issues.forEach(function(is){
             var array = [];
             array.push(is.id               || null);
             array.push(is.project.name     || null);
@@ -65,7 +65,6 @@ var testFetchRedmine = function(callback){
             array.push(is.subject          || null);
             array.push(is.start_date       || null);
             array.push(is.due_date         || null);
-//            var array = [is.id,is.project.name,is.status.name,is.assigned_to.name,is.subject,is.start_date,is.due_date];
             array.join(',')
             output += array + '\n';
         })

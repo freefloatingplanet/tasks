@@ -336,8 +336,9 @@ var fetchRedmine = function(callback){
   json['query'] = settingData['setting-redmine-child-query'];
   json['setting'] = settingData;
   callback(json)
-  .done(function(issues){
-    issues.forEach(function(issue){
+  .done(function(data){
+    if(data.total_count > 100) alert(`件数が100件を超えています。${data.limit}件取得します。検索条件を見直してください。`);
+    data.issues.forEach(function(issue){
       var task = new Task(issue.subject || "");
       task.create(CONST.TASK_STATUS.NEW);
       task.setDate(issue.start_date || "");
