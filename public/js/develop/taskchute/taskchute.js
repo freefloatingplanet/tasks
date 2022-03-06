@@ -62,7 +62,7 @@ var insertFunc = function(isCopy){
     var row = selectedRows[0];
     var array = [];
     if(isCopy){
-      array = table.getRowData(row);
+      array = JSON.parse(JSON.stringify(table.getRowData(row)));
     }
     table.insertRow(array,Number(row));
   }
