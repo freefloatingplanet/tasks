@@ -314,10 +314,10 @@ var registToRedmine = function(callback){
     var status = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.STATUS,y]));
     var issue_id = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.ISSUEID,y]));
     var regist = table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.REGIST,y]));
-    if(status === CONST.TASK_STATUS.DONE && issue_id.length > 0 && regist.length === 0){
+    if(status === CONST.TASK_STATUS.DONE && issue_id && !regist){
       var json = convertTable2TaskJson(y)
       json['rownum'] = y;
-      json['setting'] = settingData['setting'];
+      json['setting'] = settingData;
       callback(json)
       .done(function(data){
         if('rownum' in data) table.setValueFromCoords(CONST.CELL_NO.REGIST,data['rownum'],"o",true);
