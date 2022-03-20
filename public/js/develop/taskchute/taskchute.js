@@ -176,11 +176,12 @@ var highlight = function(y){
         status = CONST.TASK_STATUS.PEND;
         color = 'cornflowerblue';
     }else if(start.length !== 0 && end.length !== 0){
+      if(status !== CONST.TASK_STATUS.DONE) ratio = 100;
       status = CONST.TASK_STATUS.DONE;
       var st_dt = moment('2000-01-01T'+start,'YYYY-MM-DDTHH:mm');
       var en_dt = moment('2000-01-01T'+end,'YYYY-MM-DDTHH:mm');
       spent_m = en_dt.diff(st_dt,'minutes');
-      ratio = 100;
+      
 
       color = 'grey';
     }else if(start.length !== 0 ){
