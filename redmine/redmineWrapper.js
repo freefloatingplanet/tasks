@@ -105,7 +105,7 @@ redmineWrapper.updateIssue = (updateJson) => {
       {
       "issue":json
     },(error, data) => {
-      if(error) reject(error);
+      if(error && JSON.parse(error).ErrorCode !== 204) reject(error);
       else resolve(updateJson);  
     });
   
