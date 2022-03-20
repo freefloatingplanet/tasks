@@ -96,8 +96,10 @@ redmineWrapper.updateIssue = (updateJson) => {
       "status_id": updateJson.status_id,
       "done_ratio": updateJson.done_ratio
     };
-    if(json.done_ratio === 100) json['status_id'] = 3;
-    else if(json.done_ratio === 0) json['status_id'] = 1;
+    var setting_done = updateJson.setting['setting-redmine-child-issue-done'];
+    var setting_working = updateJson.setting['setting-redmine-child-issue-working'];
+    if(json.done_ratio == 100 && setting_done) json['status_id'] = setting_done;
+    else if(json.done_ratio == 0 && setting_working) json['status_id'] = setting_working;
 
     var redmine = redmineApiBase(updateJson.setting);
     redmine.update_issue(
