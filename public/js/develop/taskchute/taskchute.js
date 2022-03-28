@@ -379,7 +379,7 @@ var createRepeatTask = function(){
 
     if(array[CONST.CELL_NO.TITLE].indexOf('repeats')>0){
       var message = "何日後にタスクを作成しますか？";
-      var value = 7;
+      var value = 1;
       offsetDay = prompt(message,value);
     
       if(offsetDay > 0){

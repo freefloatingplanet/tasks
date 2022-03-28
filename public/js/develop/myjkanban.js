@@ -128,8 +128,30 @@ var KanbanTest = new jKanban({
       $(el).attr(CONST.ATTR.DATE,json[CONST.TITLE.DATE]);
       $(el).attr(CONST.ATTR.START,json[CONST.TITLE.START]);
       $(el).attr(CONST.ATTR.END,json[CONST.TITLE.END]);
+
+      if(status === CONST.TASK_STATUS.DONE) createRepeatKanbanTask(json);
   }
 
+  var createRepeatKanbanTask = function(json){
+
+    if(json[CONST.TITLE.TITLE].indexOf('repeats')>0){
+      var message = "何日後にタスクを作成しますか？";
+      var value = 1;
+      offsetDay = prompt(message,value);
+    
+      if(offsetDay > 0){
+        json[CONST.TITLE.STATUS] = CONST.TASK_STATUS.NEW;
+        json[CONST.TITLE.DATE] = moment().add(offsetDay, 'd').format('YYYY-MM-DD');
+        json[CONST.TITLE.SPENT] = 0;
+        json[CONST.TITLE.START] = "";
+        json[CONST.TITLE.END] = "";
+        json[CONST.TITLE.DONERATIO] = 0;
+        json[CONST.TITLE.REGIST] = "";
+        KanbanTest.addElement(CONST.BOARDID.NEW, json);
+      }
+    }
+  }
+  
 
   var visit_tabkanban_event = function(){
     //NEW
