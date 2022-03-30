@@ -17,6 +17,14 @@ $(function() {
     init();
 })
 
+$(function(){
+  setInterval("autoSave()", 3600000);
+})
+
+var autoSave = function(){
+  var fromTab = $(".active").attr('id');
+  fromFunction(fromTab);
+}
 
 var switchTab = function(fromTab,toTab){
   fromFunction(fromTab);
