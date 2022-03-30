@@ -95,7 +95,7 @@ class Task {
             case CONST.TASK_STATUS.DONE:
                 this.#task[CONST.TITLE.STATUS] = CONST.TASK_STATUS.DONE;
                 this.#task[CONST.TITLE.DATE] = moment().format("YYYY-MM-DD 00:00:00");
-                if(this.#task[CONST.TITLE.START].lenth>0) this.#task[CONST.TITLE.START] = moment().format("HH:mm");
+                if(!this.#task[CONST.TITLE.START]) this.#task[CONST.TITLE.START] = moment().format("HH:mm");
                 this.#task[CONST.TITLE.END] = moment().format("HH:mm");
                 this.#task[CONST.TITLE.DONERATIO] = 100;
                 break;
