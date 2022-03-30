@@ -308,8 +308,10 @@ var KanbanTest = new jKanban({
     var text = $(task).text();
     var header = $(task).find('#data-header').text();
     // 特殊文字エスケープ
-    header = header.string.replace(/[\^$.*+?()[]{}|]/g, '\$&');
-    if(header.lenth !== 0) text = text.replace(new RegExp(header,'g'),'');
+    if(header){
+      header = header.string.replace(/[\^$.*+?()[]{}|]/g, '\$&');
+      text = text.replace(new RegExp(header,'g'),'');
+    }
 
     var json = {
       [CONST.TITLE.ID]:      $(task).attr(CONST.ATTR.ID),
