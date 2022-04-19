@@ -42,7 +42,7 @@ var KanbanTest = new jKanban({
       // enterでsubmit、shift+enterで改行
       var $ta = $("#ticket-title");
       
-      $(document).on("keypress", "#ticket-title", function(e) {
+      $(document).on("keydown", "#ticket-title", function(e) {
         
         if (e.keyCode == 13) { // Enterが押された
           if (e.shiftKey) { // Shiftキーも押された
