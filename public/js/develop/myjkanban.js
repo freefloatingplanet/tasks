@@ -25,8 +25,9 @@ var KanbanTest = new jKanban({
       // create a form to enter element
       var formItem = document.createElement("form");
       formItem.setAttribute("class", "itemform");
+      formItem.setAttribute("id", "ticket-form");
       formItem.innerHTML =
-        '<div class="form-group"><textarea class="form-control" rows="2" autofocus></textarea></div><div class="form-group"><button type="submit" class="btn btn-primary btn-xs pull-right">Submit</button><button type="button" id="CancelBtn" class="btn btn-default btn-xs pull-right">Cancel</button></div>';
+        '<div class="form-group"><textarea id="ticket-title" class="form-control" rows="2" autofocus></textarea></div><div class="form-group"><button type="submit" id="ticket-submit-btn" class="btn btn-primary btn-xs pull-right">Submit</button><button type="button" id="CancelBtn" class="btn btn-default btn-xs pull-right">Cancel</button></div>';
 
       KanbanTest.addForm(boardId, formItem);
       formItem.addEventListener("submit", function(e) {
@@ -38,6 +39,22 @@ var KanbanTest = new jKanban({
       document.getElementById("CancelBtn").onclick = function() {
         formItem.parentNode.removeChild(formItem);
       };
+      // enterでsubmit、shift+enterで改行
+      var $ta = $("#ticket-title");
+      
+      $(document).on("keypress", "#ticket-title", function(e) {
+        
+        if (e.keyCode == 13) { // Enterが押された
+          if (e.shiftKey) { // Shiftキーも押された
+            $.noop();
+          } else if ($ta.val().replace(/\s/g, "").length > 0) {
+            $("#ticket-submit-btn").click();
+          }
+        } else {
+          $.noop();
+        }
+      });
+
     },
     itemAddOptions: {
       enabled: true,
