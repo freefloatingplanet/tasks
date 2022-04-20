@@ -20,41 +20,7 @@ var KanbanTest = new jKanban({
       dropTask(el);
     },
     buttonClick: function(el, boardId) {
-      console.log(el);
-      console.log(boardId);
-      // create a form to enter element
-      var formItem = document.createElement("form");
-      formItem.setAttribute("class", "itemform");
-      formItem.setAttribute("id", "ticket-form");
-      formItem.innerHTML =
-        '<div class="form-group"><textarea id="ticket-title" class="form-control" rows="2" autofocus></textarea></div><div class="form-group"><button type="submit" id="ticket-submit-btn" class="btn btn-primary btn-xs pull-right">Submit</button><button type="button" id="CancelBtn" class="btn btn-default btn-xs pull-right">Cancel</button></div>';
-
-      KanbanTest.addForm(boardId, formItem);
-      formItem.addEventListener("submit", function(e) {
-        e.preventDefault();
-        var text = e.target[0].value;
-        KanbanTest.addElement(boardId, createTask(boardId, text));
-        formItem.parentNode.removeChild(formItem);
-      });
-      document.getElementById("CancelBtn").onclick = function() {
-        formItem.parentNode.removeChild(formItem);
-      };
-      // enterでsubmit、shift+enterで改行
-      var $ta = $("#ticket-title");
-      
-      $(document).on("keydown", "#ticket-title", function(e) {
-        
-        if (e.keyCode == 13) { // Enterが押された
-          if (e.shiftKey) { // Shiftキーも押された
-            $.noop();
-          } else if ($ta.val().replace(/\s/g, "").length > 0) {
-            $("#ticket-submit-btn").click();
-          }
-        } else {
-          $.noop();
-        }
-      });
-
+      addTaskForm(el, boardId);
     },
     itemAddOptions: {
       enabled: true,
@@ -98,6 +64,43 @@ var KanbanTest = new jKanban({
   });
 
 
+  var addTaskForm = function(el, boardId){
+    console.log(el);
+    console.log(boardId);
+    // create a form to enter element
+    var formItem = document.createElement("form");
+    formItem.setAttribute("class", "itemform");
+    formItem.innerHTML =
+      '<div class="form-group"><textarea id="task-title'+boardId+'" class="form-control" rows="2" autofocus></textarea></div><div class="form-group"><button type="submit" id="task-submit-btn'+boardId+'" class="btn btn-primary btn-xs pull-right">Submit</button><button type="button" id="CancelBtn'+boardId+'" class="btn btn-default btn-xs pull-right">Cancel</button></div>';
+
+    KanbanTest.addForm(boardId, formItem);
+    formItem.addEventListener("submit", function(e) {
+      e.preventDefault();
+      var text = e.target[0].value;
+      var itemCount = KanbanTest.getBoardElements(boardId).length
+      KanbanTest.addElement(boardId, createTask(boardId, text),itemCount-1);
+    });
+    document.getElementById("CancelBtn"+boardId).onclick = function() {
+      formItem.parentNode.removeChild(formItem);
+    };
+    // enterでsubmit、shift+enterで改行
+    var $ta = $("#task-title"+boardId);
+    
+    $(document).on("keydown", "#task-title"+boardId, function(e) {
+      
+      if (e.keyCode == 13) { // Enterが押された
+        if (e.shiftKey) { // Shiftキーも押された
+          $.noop();
+        } else if ($ta.val().replace(/\s/g, "").length > 0) {
+          $("#task-submit-btn"+boardId).click();
+          $ta.val("");
+          return false;
+        }
+      } else {
+        $.noop();
+      }
+    });
+  }
 
   var createTask = function(boardId, title){
 
@@ -191,6 +194,7 @@ var KanbanTest = new jKanban({
           KanbanTest.addElement(CONST.BOARDID.NEW,json);
         }
     });
+    KanbanTest.options.buttonClick("",CONST.BOARDID.NEW);
 
     //WAIT
     KanbanTest.removeBoard(CONST.BOARDID.WAIT);
@@ -212,6 +216,7 @@ var KanbanTest = new jKanban({
         KanbanTest.addElement(CONST.BOARDID.WAIT,json);
       }
     });
+    KanbanTest.options.buttonClick("",CONST.BOARDID.WAIT);
 
     //WORK
     KanbanTest.removeBoard(CONST.BOARDID.WORK);
@@ -233,6 +238,7 @@ var KanbanTest = new jKanban({
         KanbanTest.addElement(CONST.BOARDID.WORK,json);
       }
     });
+    KanbanTest.options.buttonClick("",CONST.BOARDID.WORK);
 
     //DONE
     KanbanTest.removeBoard(CONST.BOARDID.DONE);
@@ -260,6 +266,7 @@ var KanbanTest = new jKanban({
         }
       }
     });
+    KanbanTest.options.buttonClick("",CONST.BOARDID.DONE);
 
     //PEND
     KanbanTest.removeBoard(CONST.BOARDID.PEND);
@@ -281,6 +288,7 @@ var KanbanTest = new jKanban({
         KanbanTest.addElement(CONST.BOARDID.PEND,json);
       }
     });
+    KanbanTest.options.buttonClick("",CONST.BOARDID.PEND);
 
   
   };
