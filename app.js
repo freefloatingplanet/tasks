@@ -10,8 +10,9 @@ const bodyParser = require('body-parser')
 const fs = require('fs')
 // redmine用モジュール
 const redmineWrapper = require('./redmine/redmineWrapper');
+const moment = require('moment');
 
-
+const datafile = './csv/task.json';
 
 // 8080番ポートで待ちうける
 app.listen(8080, () => {
@@ -28,19 +29,27 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.post('/csvwrite/',(req,res) => {
   console.log(req.body);
-  fs.writeFile('./csv/task.json',JSON.stringify(req.body),(err)=>{
+  fs.writeFile(datafile,JSON.stringify(req.body),(err)=>{
     if(err){
       console.log(err);
       throw err;
     }
   });
+  let m = moment();
+  const backupfile = datafile+m.format('YYYYMMDD');
+  fs.copyFile(datafile, backupfile, (err) => {
+    if(err){
+      console.log(err);
+      throw err;
+    }
+  })
   res.send("Received Post Data");
 });
 
 // CSV取得
 app.post('/csvread/',(req,res) => {
   console.log(req.body);
-  fs.readFile('./csv/task.json','utf8',(err,data) => {
+  fs.readFile(datafile,'utf8',(err,data) => {
     if(err){
       console.log(err);
       throw err;
