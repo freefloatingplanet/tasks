@@ -117,10 +117,15 @@ var KanbanTest = new jKanban({
 
   var moveTask = function(el){
     var elid = $(el).attr(CONST.ATTR.ID);
-    var boardid = KanbanTest.getParentBoardID(elid);
-    var no = CONST.BOARDID_TO_NO[boardid];
-    var nextno = (Number(no) + 1)%CONST.NUMBER_STATUS;
-    var nextboardid = CONST.NO_TO_BOARDID[nextno];
+    var nextboardid;
+    if($('input[name="kanban-double"]:checked').val() === "done"){
+      nextboardid = CONST.BOARDID.DONE;
+    }else{
+      var boardid = KanbanTest.getParentBoardID(elid);
+      var no = CONST.BOARDID_TO_NO[boardid];
+      var nextno = (Number(no) + 1)%CONST.NUMBER_STATUS;
+      nextboardid = CONST.NO_TO_BOARDID[nextno];  
+    }
     KanbanTest.removeElement(elid);
     KanbanTest.addElement(nextboardid, convElementToJson(el));
     var nextel = KanbanTest.findElement(elid);
