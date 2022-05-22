@@ -34,15 +34,16 @@ app.post('/csvwrite/',(req,res) => {
       console.log(err);
       throw err;
     }
+    let m = moment();
+    const backupfile = datafile+m.format('YYYYMMDD');
+    fs.copyFile(datafile, backupfile, (err) => {
+      if(err){
+        console.log(err);
+        throw err;
+      }
+    })
   });
-  let m = moment();
-  const backupfile = datafile+m.format('YYYYMMDD');
-  fs.copyFile(datafile, backupfile, (err) => {
-    if(err){
-      console.log(err);
-      throw err;
-    }
-  })
+
   res.send("Received Post Data");
 });
 
