@@ -7,57 +7,72 @@ const app = express();
 // パス指定用モジュール
 const path = require('path');
 const bodyParser = require('body-parser')
-const fs = require('fs')
+const fs = require('fs').promises
 // redmine用モジュール
 const redmineWrapper = require('./redmine/redmineWrapper');
 const moment = require('moment');
 
 const datafile = './csv/task.json';
+const logfile = './csv/log.txt';
 
 // 8080番ポートで待ちうける
 app.listen(8080, () => {
   console.log('Running at Port 8080...');
 });
 
+const writelog = async(message) => {
+  try{
+    let m = moment();
+    await fs.writeFile(logfile,`[${m.format('YYYY/MM/DD hh:mm:ss')}] ${message}`);
+  }catch{
+    console.log(e);
+  }
+}
+
 // 静的ファイルのルーティング
 app.use(express.static(path.join(__dirname, 'public')));
 
 // CSV書き込み
+const writeData = async(datafile,data) => {
+  try{
+    await fs.writeFile(datafile,data);
+    let m = moment();
+    const backupfile = datafile+m.format('YYYYMMDD');
+    await fs.copyFile(datafile, backupfile);
+  } catch(e){
+    console.log(e);
+    writelog(e);
+  }
+}
+
+
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
 app.post('/csvwrite/',(req,res) => {
   console.log(req.body);
-  fs.writeFile(datafile,JSON.stringify(req.body),(err)=>{
-    if(err){
-      console.log(err);
-      throw err;
-    }
-    let m = moment();
-    const backupfile = datafile+m.format('YYYYMMDD');
-    fs.copyFile(datafile, backupfile, (err) => {
-      if(err){
-        console.log(err);
-        throw err;
-      }
-    })
-  });
+  writeData(datafile,JSON.stringify(req.body));
 
   res.send("Received Post Data");
 });
 
 // CSV取得
+const readData = async(datafile) => {
+  try{
+    const data = await fs.readFile(datafile,'utf8');
+    return data;
+  } catch(e){
+    console.log(e);
+    writelog(e);
+  }
+}
+
 app.post('/csvread/',(req,res) => {
   console.log(req.body);
-  fs.readFile(datafile,'utf8',(err,data) => {
-    if(err){
-      console.log(err);
-      throw err;
-    }
-    console.log(data);
-    res.send(data);
-  })
+  const data = readData(datafile);
+  data.then(d=>res.send(d));
+
 });
 
 // チケット取得
@@ -67,7 +82,8 @@ app.post('/get-issues/',(req,res) => {
     .then(data => {
       res.send(data);    
     }).catch(error => {
-      res.send(error);    
+      res.send(error);
+      writelog(error);   
     })
 });
 
@@ -77,7 +93,8 @@ app.post('/create-time-entry/',(req,res) => {
     .then(data => {
       res.send(data);    
     }).catch(error => {
-      res.send(error);    
+      res.send(error);
+      writelog(error);
     })
 });
 
@@ -87,7 +104,8 @@ app.post('/update-issue/',(req,res) => {
     .then(data => {
       res.send(data);    
     }).catch(error => {
-      res.send(error);    
+      res.send(error);
+      writelog(error);
     })
 });
 
@@ -104,6 +122,7 @@ app.post('/regist-result/',(req,res) => {
   .catch((error) => 
   {
     res.send(error);    
+    writelog(error);
   });
 });
 
