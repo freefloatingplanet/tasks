@@ -309,8 +309,10 @@ var KanbanTest = new jKanban({
     
     [new_task,wait_task,work_task,done_task,pend_task].forEach(function(tasks, index, array){
         tasks.forEach(function(task){
+          if(task.hasAttribute('data-eid')){
             var json = convElementToJson(task);
             mergeddata.push(json);
+          }
         });
     });
 
