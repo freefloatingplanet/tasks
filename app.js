@@ -12,7 +12,9 @@ const fs = require('fs').promises
 const redmineWrapper = require('./redmine/redmineWrapper');
 const moment = require('moment');
 
-const datafile = './csv/task.json';
+const taskfile = './csv/task.json';
+const memofile = './csv/memo.json';
+const settingfile = './csv/setting.json';
 const logfile = './csv/log.txt';
 
 // 8080番ポートで待ちうける
@@ -52,16 +54,39 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.post('/csvwrite/',(req,res) => {
   console.log(req.body);
-  writeData(datafile,JSON.stringify(req.body));
+  if(req.body && Object.keys(req.body).length===1){
+    let key = Object.keys(req.body)[0];
+    let datafile = "";
+    switch(key){
+      case "task":
+        datafile = taskfile;
+        break;
+      case "memo":
+        datafile = memofile;
+        break;
+      case "setting":
+        datafile = settingfile;
+        break;
+    }
+    writeData(datafile,JSON.stringify(req.body));
+    res.send("Received Post Data");
 
-  res.send("Received Post Data");
+  }else{
+    writelog(`illigal request format: ${req.body}`);
+  }
 });
 
 // CSV取得
-const readData = async(datafile) => {
+const readData = async() => {
   try{
-    const data = await fs.readFile(datafile,'utf8');
-    return data;
+    let output = {};
+    const taskdata = await fs.readFile(taskfile,'utf8');
+    const memodata = await fs.readFile(memofile,'utf8');
+    const settingdata = await fs.readFile(settingfile,'utf8');
+    output.append(taskdata);
+    output.append(memodata);
+    output.append(settingdata);
+    return outputdata;
   } catch(e){
     console.log(e);
     writelog(e);
@@ -70,7 +95,7 @@ const readData = async(datafile) => {
 
 app.post('/csvread/',(req,res) => {
   console.log(req.body);
-  const data = readData(datafile);
+  const data = readData();
   data.then(d=>res.send(d));
 
 });
