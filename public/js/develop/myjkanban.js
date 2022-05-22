@@ -339,7 +339,7 @@ var KanbanTest = new jKanban({
     var header = $(task).find('#data-header').text();
     // 特殊文字エスケープ
     if(header){
-      header = header.string.replace(/[\^$.*+?()[]{}|]/g, '\$&');
+      header = header.replace(/[\^$.*+?()[]{}|]/g, '\$&');
       text = text.replace(new RegExp(header,'g'),'');
     }
 
