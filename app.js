@@ -77,28 +77,46 @@ app.post('/csvwrite/',(req,res) => {
 });
 
 // CSV取得
-const readData = async() => {
+const readData = async(datatype) => {
   try{
-    let output = {};
-    const taskdata = await fs.readFile(taskfile,'utf8');
-    const memodata = await fs.readFile(memofile,'utf8');
-    const settingdata = await fs.readFile(settingfile,'utf8');
-    output.append(taskdata);
-    output.append(memodata);
-    output.append(settingdata);
-    return outputdata;
+    let readfile;
+    switch(datatype){
+      case "task":
+        readfile = taskfile;
+        break;
+      case "memo":
+        readfile = memofile;
+        break;
+      case "setting":
+        readfile = settingfile;
+        break;
+    }
+    const output = await fs.readFile(readfile,'utf8');
+    return output;
   } catch(e){
     console.log(e);
     writelog(e);
   }
 }
 
-app.post('/csvread/',(req,res) => {
+app.post('/csvread/task/',(req,res) => {
   console.log(req.body);
-  const data = readData();
+  const data = readData("task");
   data.then(d=>res.send(d));
-
 });
+
+app.post('/csvread/memo/',(req,res) => {
+  console.log(req.body);
+  const data = readData("memo");
+  data.then(d=>res.send(d));
+});
+
+app.post('/csvread/setting/',(req,res) => {
+  console.log(req.body);
+  const data = readData("setting");
+  data.then(d=>res.send(d));
+});
+
 
 // チケット取得
 app.post('/get-issues/',(req,res) => {

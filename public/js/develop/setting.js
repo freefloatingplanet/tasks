@@ -31,13 +31,15 @@ leave_tabsetting_event = function(){
 
 visit_tabsetting_event = function(){
     var json = settingData;
-    Object.keys(json).forEach(function(key){
-        if(key === 'setting-redmine-enabled'){
-            $('#setting-redmine-enabled').prop('checked',json[key]);
-        }else{
-            $('#'+key).val(json[key]);
-        }
-    });
+    if(json){
+        Object.keys(json).forEach(function(key){
+            if(key === 'setting-redmine-enabled'){
+                $('#setting-redmine-enabled').prop('checked',json[key]);
+            }else{
+                $('#'+key).val(json[key]);
+            }
+        });    
+    }
 }
 
 // redmineからタスクの取得

@@ -94,44 +94,61 @@ var writeCSV = function(inputdata){
 }
 
 var readCSV = function(callback){
-  $.ajax({
+  let param1 = {
     type: "post",
-    url:"/csvread/",
+    url:"/csvread/task/",
     dataType:"json"
-  }).done((data => {
-    console.log(data);
-    mergeddata = data.task;
-    memodata = data.memo;
-    settingData = data.setting;
+  };
+  let param2 = {
+    type: "post",
+    url:"/csvread/memo/",
+    dataType:"json"
+  };
+  let param3 = {
+    type: "post",
+    url:"/csvread/setting/",
+    dataType:"json"
+  };
+
+  $.when(
+    $.ajax(param1),
+    $.ajax(param2),
+    $.ajax(param3)
+  ).done((res1,res2,res3) => {
+    mergeddata = res1[0].task;
+    memodata = res2[0].memo;
+    settingData = res3[0].setting;
     callback();
-  })).fail((data) => {
+  }).fail((data) => {
     console.log('cannot access url');
-  })
+  });
 }
 
 var convKeyCellNo = function(keyTitleData){
 
   var output = [];
 
-  keyTitleData.forEach(function(task){
-    var json = {
-      [CONST.CELL_NO.ID]:      task[CONST.TITLE.ID],
-      [CONST.CELL_NO.STATUS]:  task[CONST.TITLE.STATUS],
-      [CONST.CELL_NO.DATE]:    task[CONST.TITLE.DATE],
-      [CONST.CELL_NO.PROJECT]: task[CONST.TITLE.PROJECT],
-      [CONST.CELL_NO.CATEGORY]:task[CONST.TITLE.CATEGORY],
-      [CONST.CELL_NO.TITLE]:   task[CONST.TITLE.TITLE],
-      [CONST.CELL_NO.PLANH]:   task[CONST.TITLE.PLANH],
-      [CONST.CELL_NO.PLANM]:   task[CONST.TITLE.PLANM],
-      [CONST.CELL_NO.SPENT]:   task[CONST.TITLE.SPENT],
-      [CONST.CELL_NO.START]:   task[CONST.TITLE.START],
-      [CONST.CELL_NO.END]:     task[CONST.TITLE.END],
-      [CONST.CELL_NO.ISSUEID]: task[CONST.TITLE.ISSUEID],
-      [CONST.CELL_NO.DONERATIO]:task[CONST.TITLE.DONERATIO],
-      [CONST.CELL_NO.REGIST]:  task[CONST.TITLE.REGIST]
-    };
-    output.push(json);
-  });
+  if(keyTitleData){
+    keyTitleData.forEach(function(task){
+      var json = {
+        [CONST.CELL_NO.ID]:      task[CONST.TITLE.ID],
+        [CONST.CELL_NO.STATUS]:  task[CONST.TITLE.STATUS],
+        [CONST.CELL_NO.DATE]:    task[CONST.TITLE.DATE],
+        [CONST.CELL_NO.PROJECT]: task[CONST.TITLE.PROJECT],
+        [CONST.CELL_NO.CATEGORY]:task[CONST.TITLE.CATEGORY],
+        [CONST.CELL_NO.TITLE]:   task[CONST.TITLE.TITLE],
+        [CONST.CELL_NO.PLANH]:   task[CONST.TITLE.PLANH],
+        [CONST.CELL_NO.PLANM]:   task[CONST.TITLE.PLANM],
+        [CONST.CELL_NO.SPENT]:   task[CONST.TITLE.SPENT],
+        [CONST.CELL_NO.START]:   task[CONST.TITLE.START],
+        [CONST.CELL_NO.END]:     task[CONST.TITLE.END],
+        [CONST.CELL_NO.ISSUEID]: task[CONST.TITLE.ISSUEID],
+        [CONST.CELL_NO.DONERATIO]:task[CONST.TITLE.DONERATIO],
+        [CONST.CELL_NO.REGIST]:  task[CONST.TITLE.REGIST]
+      };
+      output.push(json);
+    });  
+  }
 
   return output;
 
