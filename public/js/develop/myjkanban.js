@@ -77,7 +77,7 @@ var KanbanTest = new jKanban({
     formItem.addEventListener("submit", function(e) {
       e.preventDefault();
       var text = e.target[0].value;
-      var itemCount = KanbanTest.getBoardElements(boardId).length
+      var itemCount = getTasksFromBoardElements(KanbanTest.getBoardElements(boardId)).length
       KanbanTest.addElement(boardId, createTask(boardId, text),itemCount-1);
     });
     document.getElementById("CancelBtn"+boardId).onclick = function() {
@@ -299,20 +299,18 @@ var KanbanTest = new jKanban({
   };
  
   var leave_tabkanban_event = function(){
-    var new_task = KanbanTest.getBoardElements(CONST.BOARDID.NEW);
-    var wait_task = KanbanTest.getBoardElements(CONST.BOARDID.WAIT);
-    var work_task = KanbanTest.getBoardElements(CONST.BOARDID.WORK);
-    var done_task = KanbanTest.getBoardElements(CONST.BOARDID.DONE);
-    var pend_task = KanbanTest.getBoardElements(CONST.BOARDID.PEND);
+    var new_task = getTasksFromBoardElements(KanbanTest.getBoardElements(CONST.BOARDID.NEW));
+    var wait_task = getTasksFromBoardElements(KanbanTest.getBoardElements(CONST.BOARDID.WAIT));
+    var work_task = getTasksFromBoardElements(KanbanTest.getBoardElements(CONST.BOARDID.WORK));
+    var done_task = getTasksFromBoardElements(KanbanTest.getBoardElements(CONST.BOARDID.DONE));
+    var pend_task = getTasksFromBoardElements(KanbanTest.getBoardElements(CONST.BOARDID.PEND));
 
     mergeddata=[];
     
     [new_task,wait_task,work_task,done_task,pend_task].forEach(function(tasks, index, array){
         tasks.forEach(function(task){
-          if(task.hasAttribute('data-eid')){
-            var json = convElementToJson(task);
-            mergeddata.push(json);
-          }
+          var json = convElementToJson(task);
+          mergeddata.push(json);
         });
     });
 
@@ -325,11 +323,11 @@ var KanbanTest = new jKanban({
   };
 
   var getAllElementCount = function(){
-    var count = KanbanTest.getBoardElements(CONST.BOARDID.NEW).length +
-    KanbanTest.getBoardElements(CONST.BOARDID.WAIT).length + 
-    KanbanTest.getBoardElements(CONST.BOARDID.WORK).length + 
-    KanbanTest.getBoardElements(CONST.BOARDID.DONE).length + 
-    KanbanTest.getBoardElements(CONST.BOARDID.PEND).length +
+    var count = getTasksFromBoardElements(KanbanTest.getBoardElements(CONST.BOARDID.NEW)).length +
+    getTasksFromBoardElements(KanbanTest.getBoardElements(CONST.BOARDID.WAIT)).length + 
+    getTasksFromBoardElements(KanbanTest.getBoardElements(CONST.BOARDID.WORK)).length + 
+    getTasksFromBoardElements(KanbanTest.getBoardElements(CONST.BOARDID.DONE)).length + 
+    getTasksFromBoardElements(KanbanTest.getBoardElements(CONST.BOARDID.PEND)).length +
     pastDoneData.length
 
     return count;
@@ -368,7 +366,7 @@ var KanbanTest = new jKanban({
   }
 
   var getLatestEndTime = function(){
-    var done_task = KanbanTest.getBoardElements(CONST.BOARDID.DONE);
+    var done_task = getTasksFromBoardElements(KanbanTest.getBoardElements(CONST.BOARDID.DONE));
     var today = moment().format('YYYY-MM-DD');
     var todayZeroTime = moment(today+'T00:00:00','YYYY-MM-DDTHH:mm:ss');
     var latestEndTime = todayZeroTime;
@@ -385,5 +383,18 @@ var KanbanTest = new jKanban({
     }
 
     return latestEndTime.format('HH:mm');
+  }
+
+  var getTasksFromBoardElements = function(boardElements){
+    var output=[];
+    if(boardElements){
+    
+      boardElements.forEach(function(elem, index, array){
+        if(elem.classList.contains('kanban-item')){
+          output.push(elem);
+        }
+      });   
+    }
+    return output;
   }
 
