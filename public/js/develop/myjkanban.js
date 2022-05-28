@@ -23,7 +23,7 @@ var KanbanTest = new jKanban({
       addTaskForm(el, boardId);
     },
     itemAddOptions: {
-      enabled: true,
+      enabled: false,
       content: '+ Add New Card',
       class: 'custom-button',
       footer: true
@@ -71,18 +71,16 @@ var KanbanTest = new jKanban({
     var formItem = document.createElement("form");
     formItem.setAttribute("class", "itemform");
     formItem.innerHTML =
-      '<div class="form-group"><textarea id="task-title'+boardId+'" class="form-control" rows="2" autofocus></textarea></div><div class="form-group"><button type="submit" id="task-submit-btn'+boardId+'" class="btn btn-primary btn-xs pull-right">Submit</button><button type="button" id="CancelBtn'+boardId+'" class="btn btn-default btn-xs pull-right">Cancel</button></div>';
+      '<div class="form-group"><textarea id="task-title'+boardId+'" class="form-control" rows="2" style="width:100%" placeholder="Type title and Press Enter" autofocus></textarea></div><div class="form-group"><button type="submit" id="task-submit-btn'+boardId+'" class="btn btn-primary btn-xs pull-right" style="display:none">Submit</button></div>';
 
     KanbanTest.addForm(boardId, formItem);
     formItem.addEventListener("submit", function(e) {
       e.preventDefault();
       var text = e.target[0].value;
-      var itemCount = getTasksFromBoardElements(KanbanTest.getBoardElements(boardId)).length
+      // ここはformも含めてカウントする
+      var itemCount = KanbanTest.getBoardElements(boardId).length
       KanbanTest.addElement(boardId, createTask(boardId, text),itemCount-1);
     });
-    document.getElementById("CancelBtn"+boardId).onclick = function() {
-      formItem.parentNode.removeChild(formItem);
-    };
     // enterでsubmit、shift+enterで改行
     var $ta = $("#task-title"+boardId);
     
@@ -126,8 +124,10 @@ var KanbanTest = new jKanban({
       var nextno = (Number(no) + 1)%CONST.NUMBER_STATUS;
       nextboardid = CONST.NO_TO_BOARDID[nextno];  
     }
+    // ここはformも含めてカウントする
+    var itemCount = KanbanTest.getBoardElements(nextboardid).length
     KanbanTest.removeElement(elid);
-    KanbanTest.addElement(nextboardid, convElementToJson(el));
+    KanbanTest.addElement(nextboardid, convElementToJson(el), itemCount - 1);
     var nextel = KanbanTest.findElement(elid);
     dropTask(nextel);
   };
