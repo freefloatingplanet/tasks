@@ -51,37 +51,11 @@ var KanbanTest = new jKanban({
     footer: true
   },
   boards: [
-    {
-      id: "_new",
-      title: "New",
-      class: "info,good",
-      item: []
-    },
-    {
-      id: "_waiting",
-      title: "ToDo",
-      class: "warning",
-      item: []
-    },
-    {
-      id: "_working",
-      title: "Working",
-      class: "warning",
-      item: []
-    },
-    {
-      id: "_done",
-      title: "Done(Today)",
-      class: "success",
-      item: []
-    },
-    {
-      id: "_pending",
-      title: "Pending",
-      class: "info",
-      item: []
-    }
-
+    CONST.BOARD_CONTENT[CONST.BOARDID.NEW],
+    CONST.BOARD_CONTENT[CONST.BOARDID.WAIT],
+    CONST.BOARD_CONTENT[CONST.BOARDID.WORK],
+    CONST.BOARD_CONTENT[CONST.BOARDID.DONE],
+    CONST.BOARD_CONTENT[CONST.BOARDID.PEND]
   ]
 });
 
@@ -208,118 +182,40 @@ var createRepeatKanbanTask = function(json){
 }
 
 var visit_tabkanban_event = function(){
-  //NEW
-  KanbanTest.removeBoard(CONST.BOARDID.NEW);
-  KanbanTest.addBoards([
-      {
-          id: CONST.BOARDID.NEW,
-          title: "New",
-          class: "info,good",
-          item: []
-      }
-    ]);
-  mergeddata.forEach(function(json){
-      if(json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.NEW){
-        if(json[CONST.TITLE.PROJECT].length!==0) json['header'] = json[CONST.TITLE.PROJECT];
-        if(json[CONST.TITLE.CATEGORY].length!==0){
-          if(json['header']) json['header'] += '.';
-          json['header'] += json[CONST.TITLE.CATEGORY];
-        }
-        KanbanTest.addElement(CONST.BOARDID.NEW,json);
-      }
-  });
-  KanbanTest.options.buttonClick("",CONST.BOARDID.NEW);
-  //WAIT
-  KanbanTest.removeBoard(CONST.BOARDID.WAIT);
-  KanbanTest.addBoards([
-      {
-          id: CONST.BOARDID.WAIT,
-          title: "ToDo",
-          class: "warning",
-          item: []
-      }
-    ]);
-  mergeddata.forEach(function(json){
-    if(json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.WAIT){
-      if(json[CONST.TITLE.PROJECT].length!==0) json['header'] = json[CONST.TITLE.PROJECT];
-      if(json[CONST.TITLE.CATEGORY].length!==0){
-        if(json['header']) json['header'] += '.';
-        json['header'] += json[CONST.TITLE.CATEGORY];
-      }
-      KanbanTest.addElement(CONST.BOARDID.WAIT,json);
-    }
-  });
-  KanbanTest.options.buttonClick("",CONST.BOARDID.WAIT);
-  //WORK
-  KanbanTest.removeBoard(CONST.BOARDID.WORK);
-  KanbanTest.addBoards([
-      {
-          id: CONST.BOARDID.WORK,
-          title: "Working",
-          class: "warning",
-          item: []
-      }
-    ]);
-  mergeddata.forEach(function(json){
-    if(json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.WORK){
-      if(json[CONST.TITLE.PROJECT].length!==0) json['header'] = json[CONST.TITLE.PROJECT];
-      if(json[CONST.TITLE.CATEGORY].length!==0){
-        if(json['header']) json['header'] += '.';
-        json['header'] += json[CONST.TITLE.CATEGORY];
-      }
-      KanbanTest.addElement(CONST.BOARDID.WORK,json);
-    }
-  });
-  KanbanTest.options.buttonClick("",CONST.BOARDID.WORK);
-  //DONE
-  KanbanTest.removeBoard(CONST.BOARDID.DONE);
-  KanbanTest.addBoards([
-      {
-          id: CONST.BOARDID.DONE,
-          title: "Done(Today)",
-          class: "success",
-          item: []
-      }
-    ]);
+
+  //merge
   var todaycal = moment().format("YYYY-MM-DD 00:00:00");
   pastDoneData = [];
-  mergeddata.forEach(function(json){
-    if(json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.DONE){
-      if(todaycal === json[CONST.TITLE.DATE]){
-        if(json[CONST.TITLE.PROJECT].length!==0) json['header'] = json[CONST.TITLE.PROJECT];
-        if(json[CONST.TITLE.CATEGORY].length!==0){
-          if(json['header']) json['header'] += '.';
-          json['header'] += json[CONST.TITLE.CATEGORY];
-        }
-        KanbanTest.addElement(CONST.BOARDID.DONE,json);
-      }else{
-        pastDoneData.push(json);
-      }
-    }
-  });
-  KanbanTest.options.buttonClick("",CONST.BOARDID.DONE);
-  //PEND
-  KanbanTest.removeBoard(CONST.BOARDID.PEND);
-  KanbanTest.addBoards([
-      {
-          id: CONST.BOARDID.PEND,
-          title: "Pending",
-          class: "info",
-          item: []
-      }
-    ]);
-  mergeddata.forEach(function(json){
-    if(json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.PEND){
-      if(json[CONST.TITLE.PROJECT].length!==0) json['header'] = json[CONST.TITLE.PROJECT];
-      if(json[CONST.TITLE.CATEGORY].length!==0){
-        if(json['header']) json['header'] += '.';
-        json['header'] += json[CONST.TITLE.CATEGORY];
-      }
-      KanbanTest.addElement(CONST.BOARDID.PEND,json);
-    }
-  });
-  KanbanTest.options.buttonClick("",CONST.BOARDID.PEND);
 
+  Object.values(CONST.BOARDID).forEach(boardid => {
+    // ボードの作り直し
+    KanbanTest.removeBoard(boardid);
+    KanbanTest.addBoards([
+      CONST.BOARD_CONTENT[boardid]
+    ]);
+
+    // データ登録
+    mergeddata.forEach(function(json){
+        if(json[CONST.TITLE.STATUS]===CONST.BOARDID_TO_TASK[boardid]){
+          // doneに過去に終了したタスクも含まれているので退避
+          var isDone = (json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.DONE);
+          var isToday = (todaycal === json[CONST.TITLE.DATE]);
+          if(isDone && !isToday){
+            pastDoneData.push(json);
+            return false;
+          }
+
+          if(json[CONST.TITLE.PROJECT].length!==0) json['header'] = json[CONST.TITLE.PROJECT];
+          if(json[CONST.TITLE.CATEGORY].length!==0){
+            if(json['header']) json['header'] += '.';
+            json['header'] += json[CONST.TITLE.CATEGORY];
+          }
+          KanbanTest.addElement(boardid,json);
+        }
+    });
+    // textareaを出すためにbuttonClickイベントを引く
+    KanbanTest.options.buttonClick("",boardid);  
+  });
 };
 
 var leave_tabkanban_event = function(){

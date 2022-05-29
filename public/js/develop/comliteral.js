@@ -86,5 +86,38 @@ const CONST = {
     OFFSET:{
         DEFAULT: 10000,
         DONE: 30000
+    },
+    BOARD_CONTENT:{
+        _new:{
+            id: "_new",
+            title: "New",
+            class: "info,good",
+            item: []  
+        },
+        _waiting:{
+            id: "_waiting",
+            title: "ToDo",
+            class: "warning",
+            item: []
+  
+        },
+        _working:{
+            id: "_working",
+            title: "Working",
+            class: "warning",
+            item: []  
+        },
+        _done:{
+            id: "_done",
+            title: "Done(Today)",
+            class: "success",
+            item: []  
+        },
+        _pending:{
+            id: "_pending",
+            title: "Pending",
+            class: "info",
+            item: []  
+        }
     }
 };
