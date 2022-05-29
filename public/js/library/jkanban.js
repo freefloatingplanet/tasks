@@ -216,6 +216,9 @@ var dragula = require('dragula');
       nodeItem.innerHTML = __buildItemCard(element)
       //add function
       nodeItem.clickfn = element.click
+      nodeItem.clickeditfn = element.clickedit
+      nodeItem.clickfinishfn = element.clickfinish
+      nodeItem.clickdeletefn = element.clickdelete
       nodeItem.dblclickfn = element.dblclick
       nodeItem.contextfn = element.context;
       nodeItem.dragfn = element.drag
@@ -333,6 +336,9 @@ var dragula = require('dragula');
           nodeItem.innerHTML = __buildItemCard(itemKanban)
           //add function
           nodeItem.clickfn = itemKanban.click
+          nodeItem.clickeditfn = itemKanban.clickedit
+          nodeItem.clickfinishfn = itemKanban.clickfinish
+          nodeItem.clickdeletefn = itemKanban.clickdelete
           nodeItem.dblclickfn = itemKanban.dblclick
           nodeItem.contextfn = itemKanban.context
           nodeItem.dragfn = itemKanban.drag
@@ -409,6 +415,9 @@ var dragula = require('dragula');
       nodeItem.innerHTML = __buildItemCard(element)
       // add function
       nodeItem.clickfn = element.click
+      nodeItem.clickeditfn = element.clickedit
+      nodeItem.clickfinishfn = element.clickfinish
+      nodeItem.clickdeletefn = element.clickdelete
       nodeItem.dblclickfn = element.dblclick
       nodeItem.contextfn = element.context
       nodeItem.dragfn = element.drag
@@ -524,6 +533,21 @@ var dragula = require('dragula');
         self.options.click(this)
         if (typeof this.clickfn === 'function') this.clickfn(this)
       })
+      nodeItem.getElementsByClassName("editbtn")[0].addEventListener('click',function(e){
+        if (!self.options.propagationHandlers.includes('clickedit')) e.preventDefault()
+        self.options.clickedit(this)
+        if (typeof this.clickeditfn === 'function') this.clickeditfn(this)
+      })
+      nodeItem.getElementsByClassName("finishbtn")[0].addEventListener('click',function(e){
+        if (!self.options.propagationHandlers.includes('clickefinish')) e.preventDefault()
+        self.options.clickfinish(this)
+        if (typeof this.clickfinishfn === 'function') this.clickfinishfn(this)
+      })
+      nodeItem.getElementsByClassName("deletebtn")[0].addEventListener('click',function(e){
+        if (!self.options.propagationHandlers.includes('clickdelete')) e.preventDefault()
+        self.options.clickdelete(this)
+        if (typeof this.clickdeletefn === 'function') this.clickdeletefn(this)
+      })
     }
 
     function __ondblclickHandler (nodeItem, dblclickfn) {
@@ -591,8 +615,8 @@ var dragula = require('dragula');
     }
 
     function __buildItemCard(item) {
-      var result = 'title' in item ? item.title : '';
-      var headerdiv = 'header' in item ? '<div class=kanban-item-header id=data-header>'+item.header+'<br></div>' : '';
+      var result = 'title' in item ? '<div id=data-title>'+item.title+'</div>' : '';
+      var headerdiv = 'header' in item ? '<div class=kanban-item-header id=data-header>'+item.header+'</div>' : '';
 
       if (self.options.itemHandleOptions.enabled) {
           if ((self.options.itemHandleOptions.customHandler || undefined) === undefined) {
@@ -611,7 +635,7 @@ var dragula = require('dragula');
                   customItemLayout = '';
               }
 
-              result = '<div class=\'item_handle ' + customCssHandler + '\'><i class=\'item_handle ' + customCssIconHandler + '\'></i></div><div>'+headerdiv + result + '</div>'
+              result = '<table style="width:100%; table-layout: fixed;"><tbody><tr><td style="width:20pt;"><span class=\'item_handle ' + customCssHandler + '\'><i class=\'item_handle ' + customCssIconHandler + '\'></i></span></td><td style="width:90%;overflow-wrap : break-word;"><span>'+headerdiv + result + '</span></td><td style="width:15pt;" class="editbtn"><i class="fa-solid fa-pencil"></i></td><td style="width:15pt;" class="finishbtn"><i class="fa-solid fa-check"></i></td><td style="width:15pt;" class="deletebtn"><i class="fa-solid fa-xmark"></i></td></tr></tbody></table>';
           } else {
               result = '<div> ' + self.options.itemHandleOptions.customHandler.replace(/%([^%]+)%/g, function (match, key) 
                       { return item[key] !== undefined ? item[key] : '' }) + ' </div>'

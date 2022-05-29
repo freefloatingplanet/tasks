@@ -7,9 +7,31 @@ var KanbanTest = new jKanban({
     },
     click: function(el) {
       console.log("Trigger on all items click!");
+/**      if(el.style.backgroundColor === "lightgray"){
+        el.style.backgroundColor = "white";
+      }else{
+        el.style.backgroundColor = "lightgray";
+      }
+*/
+    },
+    clickedit: function(el) {
+      console.log("click at edit!");
+      editTaskTitle(el.parentElement.parentElement.parentElement.parentElement);
+    },
+    clickfinish: function(el) {
+      console.log("click at finish!");
+      moveTask(el.parentElement.parentElement.parentElement.parentElement,"done");
+    },
+    clickdelete: function(el) {
+      console.log("click at delete!");
+      removeTask(el.parentElement.parentElement.parentElement.parentElement);
     },
     dblclick: function(el) {
-      moveTask(el);
+      if($('input[name="kanban-double"]:checked').val() === "done"){
+        moveTask(el,"done");
+      }else{
+        moveTask(el,"next");
+      }
     },
     context: function(el, e) {
       console.log("Trigger on all items right-click!");
@@ -111,12 +133,33 @@ var KanbanTest = new jKanban({
     t.setId(nextid+offset);
 
     return t.getTask();
-  };
+  }
 
-  var moveTask = function(el){
+  var editTaskTitle = function(el){
+
+    var message = "修正後のタイトルを入力してください。";
+    var beforeTitle = $(el).find('#data-title').text()
+    beforeTitle = beforeTitle.replace(/[\^$.*+?()[]{}|]/g, '\$&');
+    var afterTitle = prompt(message,beforeTitle);
+    afterTitle = afterTitle.replace(/[\^$.*+?()[]{}|]/g, '\$&');
+  
+    if(afterTitle){
+      $(el).find('#data-title').text(afterTitle)
+    }else{
+      alert("1文字以上のタイトルを入力してください。");
+    }
+  }
+  
+
+  var removeTask = function(el){
+    var elid = $(el).attr(CONST.ATTR.ID);
+    KanbanTest.removeElement(elid);
+  }
+
+  var moveTask = function(el,toBoard){
     var elid = $(el).attr(CONST.ATTR.ID);
     var nextboardid;
-    if($('input[name="kanban-double"]:checked').val() === "done"){
+    if(toBoard === "done"){
       nextboardid = CONST.BOARDID.DONE;
     }else{
       var boardid = KanbanTest.getParentBoardID(elid);
