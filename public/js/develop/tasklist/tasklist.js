@@ -26,8 +26,8 @@ var changeShowMode = function(){
     case 'wbsmode':
       wbsModeOn();
       break;
-    case 'taskchutemode':
-      taskchuteModeOn();
+    case 'tasklistmode':
+      tasklistModeOn();
       break;
   }
   openclose();
@@ -214,7 +214,7 @@ var sortbyid = function(){
   table.orderBy(CONST.CELL_NO.ID,false);
 }
 
-var taskchuteModeOn = function(){
+var tasklistModeOn = function(){
   table.orderBy(CONST.CELL_NO.END,false);
   table.orderBy(CONST.CELL_NO.DATE,false);
 
@@ -267,7 +267,7 @@ var wbsModeOff = function(){
   }
 }
 
-var taskchute_initdata = function(){
+var tasklist_initdata = function(){
   table.setData({});
   table.setData(convKeyCellNo(mergeddata));
   sortbyid();
@@ -278,7 +278,7 @@ var taskchute_initdata = function(){
 }
 
 var visit_tabtask_event = function(){
-  taskchute_initdata();
+  tasklist_initdata();
 };
 
 
