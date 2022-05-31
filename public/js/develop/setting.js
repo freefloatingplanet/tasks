@@ -20,12 +20,19 @@ redmine_testFetch_event = function(){
 
 leave_tabsetting_event = function(){
     var json = {};
-    var selectdata1 = $('[id*="setting-redmine-child"]');
-    selectdata1.each(function(i,data){
-        json[$(data).attr('id')] = $(data).val();
+    var selecttext = $('#setting-area :text');
+    selecttext.each(function(i,data){
+        json[$(data).attr('id')] = {type:'text',value:$(data).val()};
     });
-    var selectdata2 = $('[id*="setting-redmine-enabled"]');
-    json[selectdata2.attr('id')] = selectdata2.prop('checked');
+    var selectcheckbox = $('#setting-area :checkbox:checked');
+    selectcheckbox.each(function(i,data){
+        json[$(data).attr('id')] = {type:'checkbox', value:$(data).prop('checked')};
+    })
+
+    var selectradio = $('#setting-area :radio:checked');
+    selectradio.each(function(i,data){
+        json[$(data).attr('id')] = {type:'radio', value: $(data).prop('checked')};
+    })
     settingData = json;
 }
 
@@ -33,12 +40,18 @@ visit_tabsetting_event = function(){
     var json = settingData;
     if(json){
         Object.keys(json).forEach(function(key){
-            if(key === 'setting-redmine-enabled'){
-                $('#setting-redmine-enabled').prop('checked',json[key]);
-            }else{
-                $('#'+key).val(json[key]);
+
+            switch(json[key].type){
+                case 'text':
+                    $('#'+key).val(json[key].value);
+                    break;
+                case 'radio':
+                case 'checkbox':
+                    $('#'+key).prop('checked',json[key].value);
+                    break;
             }
-        });    
+
+        });
     }
 }
 

@@ -4,9 +4,9 @@ const Redmine = require('node-redmine');
 let redmineWrapper = {};
 
 redmineApiBase = function(settingJson){
-  var hostName = settingJson['setting-redmine-child-baseurl'];
+  var hostName = settingJson['setting-redmine-child-baseurl'].value;
   var config = {
-    apiKey: settingJson['setting-redmine-child-apikey']
+    apiKey: settingJson['setting-redmine-child-apikey'].value
   }
   var redmine = new Redmine(hostName, config);
 

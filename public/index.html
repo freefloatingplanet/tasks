@@ -54,12 +54,12 @@
     </div>
     <div class="content-area">
       <!--フリー-->
-      <div class="content">
+      <div class="content" id="free-area">
         <textarea name="memodata" id="memodata" rows="50" cols="150"></textarea>
         <script src="js/develop/memo.js"></script>
       </div>
       <!--タスク一覧-->
-      <div class="content show">
+      <div class="content show" id="tasks-area">
         <table class="task-table">
           <tr>
             <th class="task-th">本日</th> <td class="task-td"><input type="text" id="today"></td>
@@ -86,14 +86,14 @@
         <script src="js/develop/tasklist/task-redmine.js"></script>
       </div>
       <!--カンバン-->
-      <div class="content">
+      <div class="content" id="kanban-area">
         <div id="myKanban"></div>    
         <script src="js/library/jkanban.js"></script>
         <script src="js/develop/myjkanban.js"></script>
     
       </div>
       <!--設定-->
-      <div class="content">
+      <div class="content" id="setting-area">
         <table class="set-table">
           <h1>Redmine連携</h1>
           <tr>
@@ -127,6 +127,15 @@
                 <input type="radio" id="setting-kanban-double-done" name="kanban-double" value="done">完了
               </label>
             </td>
+          </tr>
+          <tr>
+            <th class="set-th">色(期限前)</th> <td class="set-td"><input type="text" id="setting-kanban-color-future" class="set-text" value="white"></td>
+          </tr>
+          <tr>
+            <th class="set-th">色(本日)</th> <td class="set-td"><input type="text" id="setting-kanban-color-today" class="set-text" value="linen"></td>
+          </tr>
+          <tr>
+            <th class="set-th">色(期限切れ)</th> <td class="set-td"><input type="text" id="setting-kanban-color-expire" class="set-text" value="lightpink"></td>
           </tr>
         </table>
 

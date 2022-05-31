@@ -305,13 +305,20 @@ var addElementWrapper = function(boardId, json, position){
   var taskdate = $(el).attr(CONST.ATTR.DATE);
   var today = moment();
 
-  const COLOR_TODAY = "linen";
-  const COLOR_EXPIRE = "lightpink";
-  const COLOR_FUTURE = "white"
+  const COLOR_TODAY = $('#setting-kanban-color-today').val();
+  const COLOR_EXPIRE = $('#setting-kanban-color-expire').val();
+  const COLOR_FUTURE = $('#setting-kanban-color-future').val();
 
-  if(today.isSame(taskdate,'day')) el.style.backgroundColor = COLOR_TODAY;
-  else if(today.isAfter(taskdate))  el.style.backgroundColor = COLOR_EXPIRE;
-  else el.style.backgroundColor = COLOR_FUTURE;
+  if(today.isSame(taskdate,'day')) setElementBackgroundColor(el,COLOR_TODAY);
+  else if(today.isAfter(taskdate))  setElementBackgroundColor(el,COLOR_EXPIRE);
+  else setElementBackgroundColor(el,COLOR_FUTURE);
 
+}
 
+var setElementBackgroundColor = function(el,color){
+  if(color){
+    el.style.backgroundColor = color;
+  }else{
+    el.style.backgroundColor = 'white';
+  }
 }
