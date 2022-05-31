@@ -75,7 +75,7 @@ var KanbanTest = new jKanban({
       var text = e.target[0].value;
       // ここはformも含めてカウントする
       var itemCount = KanbanTest.getBoardElements(boardId).length
-      KanbanTest.addElement(boardId, createTask(boardId, text),itemCount-1);
+      addElementWrapper(boardId, createTask(boardId, text),itemCount-1);
     });
     // enterでsubmit、shift+enterで改行
     var $ta = $("#task-title"+boardId);
@@ -137,7 +137,7 @@ var moveTask = function(el,toBoard){
   // ここはformも含めてカウントする
   var itemCount = KanbanTest.getBoardElements(nextboardid).length
   KanbanTest.removeElement(elid);
-  KanbanTest.addElement(nextboardid, convElementToJson(el), itemCount - 1);
+  addElementWrapper(nextboardid, convElementToJson(el), itemCount - 1);
   var nextel = KanbanTest.findElement(elid);
   dropTask(nextel);
 };
@@ -176,7 +176,7 @@ var createRepeatKanbanTask = function(json){
       json[CONST.TITLE.END] = "";
       json[CONST.TITLE.DONERATIO] = 0;
       json[CONST.TITLE.REGIST] = "";
-      KanbanTest.addElement(CONST.BOARDID.NEW, json);
+      addElementWrapper(CONST.BOARDID.NEW, json);
     }
   }
 }
@@ -210,7 +210,7 @@ var visit_tabkanban_event = function(){
             if(json['header']) json['header'] += '.';
             json['header'] += json[CONST.TITLE.CATEGORY];
           }
-          KanbanTest.addElement(boardid,json);
+          addElementWrapper(boardid,json);
         }
     });
     // textareaを出すためにbuttonClickイベントを引く
@@ -293,4 +293,22 @@ var getTasksFromBoardElements = function(boardElements){
     });   
   }
   return output;
+}
+
+var addElementWrapper = function(boardId, json, position){
+
+  KanbanTest.addElement(boardId, json, position);
+  var el = KanbanTest.findElement(json.id);
+  var taskdate = $(el).attr(CONST.ATTR.DATE);
+  var today = moment();
+
+  const COLOR_TODAY = "linen";
+  const COLOR_EXPIRE = "lightpink";
+  const COLOR_FUTURE = "white"
+
+  if(today.isSame(taskdate,'day')) el.style.backgroundColor = COLOR_TODAY;
+  else if(today.isAfter(taskdate))  el.style.backgroundColor = COLOR_EXPIRE;
+  else el.style.backgroundColor = COLOR_FUTURE;
+
+
 }
