@@ -87,6 +87,14 @@
       </div>
       <!--カンバン-->
       <div class="content" id="kanban-area">
+        <table class="task-table">
+          <tr>
+            <th class="task-th">本日</th> <td class="task-td"><span id="ktoday"></span></td>
+            <th class="task-th">予定時間</th> <td class="task-td"><span id="kplantime">9</span>時間</td>
+            <th class="task-th">実績時間</th> <td class="task-td"><span id="kspenttime">9</span>時間</td>
+          </tr>
+        </table>
+
         <div id="myKanban"></div>    
         <script src="js/library/jkanban.js"></script>
         <script src="js/develop/myjkanban.js"></script>

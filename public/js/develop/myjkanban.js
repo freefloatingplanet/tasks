@@ -17,14 +17,20 @@ var KanbanTest = new jKanban({
   clickedit: function(el) {
     console.log("click at edit!");
     editTaskTitle(el.parentElement.parentElement.parentElement.parentElement);
+    // 日付領域の更新
+    updateKanbanDateArea();
   },
   clickfinish: function(el) {
     console.log("click at finish!");
     moveTask(el.parentElement.parentElement.parentElement.parentElement,"done");
+    // 日付領域の更新
+    updateKanbanDateArea();
   },
   clickdelete: function(el) {
     console.log("click at delete!");
     removeTask(el.parentElement.parentElement.parentElement.parentElement);
+    // 日付領域の更新
+    updateKanbanDateArea();
   },
   dblclick: function(el) {
     if($('input[name="kanban-double"]:checked').val() === "done"){
@@ -32,6 +38,9 @@ var KanbanTest = new jKanban({
     }else{
       moveTask(el,"next");
     }
+    // 日付領域の更新
+    updateKanbanDateArea();
+
   },
   context: function(el, e) {
     console.log("Trigger on all items right-click!");
@@ -40,6 +49,9 @@ var KanbanTest = new jKanban({
     console.log(target.parentElement.getAttribute('data-id'));
     console.log(el, target, source, sibling)
     dropTask(el);
+    // 日付領域の更新
+    updateKanbanDateArea();
+
   },
   buttonClick: function(el, boardId) {
     addTaskForm(el, boardId);
@@ -76,6 +88,9 @@ var KanbanTest = new jKanban({
       // ここはformも含めてカウントする
       var itemCount = KanbanTest.getBoardElements(boardId).length
       addElementWrapper(boardId, createTask(boardId, text),itemCount-1);
+      // 日付領域の更新
+      updateKanbanDateArea();
+
     });
     // enterでsubmit、shift+enterで改行
     var $ta = $("#task-title"+boardId);
@@ -184,11 +199,29 @@ var createRepeatKanbanTask = function(json){
   }
 }
 
+var updateKanbanDateArea = function(){
+  var sumPlanTime = 0;
+  var sumSpentTime = 0;
+
+  $('#ktoday').text(moment().format("YYYY-MM-DD"));
+  Object.values(CONST.BOARDID).forEach(val => {
+    getTasksFromBoardElements(KanbanTest.getBoardElements(val)).forEach(task => {
+      sumPlanTime += Number($(task).attr(CONST.ATTR.PLANM));
+      sumSpentTime += Number($(task).attr(CONST.ATTR.SPENT));
+    });
+  });
+
+  $('#kplantime').text((sumPlanTime/60).toFixed(1));
+  $('#kspenttime').text((sumSpentTime/60).toFixed(1));
+
+
+}
+
 var visit_tabkanban_event = function(){
 
-  //merge
-  var todaycal = moment().format("YYYY-MM-DD 00:00:00");
   pastDoneData = [];
+  // 日付領域の更新
+  updateKanbanDateArea();
 
   Object.values(CONST.BOARDID).forEach(boardid => {
     // ボードの作り直し
@@ -202,7 +235,7 @@ var visit_tabkanban_event = function(){
         if(json[CONST.TITLE.STATUS]===CONST.BOARDID_TO_TASK[boardid]){
           // doneに過去に終了したタスクも含まれているので退避
           var isDone = (json[CONST.TITLE.STATUS]===CONST.TASK_STATUS.DONE);
-          var isToday = (todaycal === json[CONST.TITLE.DATE]);
+          var isToday = (moment().isSame(json[CONST.TITLE.DATE],'day'));
           if(isDone && !isToday){
             pastDoneData.push(json);
             return false;
