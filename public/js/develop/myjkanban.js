@@ -120,8 +120,11 @@ var editTaskTitle = function(el){
 }
 
 var removeTask = function(el){
-  var elid = $(el).attr(CONST.ATTR.ID);
-  KanbanTest.removeElement(elid);
+  var isOk = confirm('タスクを削除します。よろしいですか？')
+  if(isOk){
+    var elid = $(el).attr(CONST.ATTR.ID);
+    KanbanTest.removeElement(elid);  
+  }
 }
 var moveTask = function(el,toBoard){
   var elid = $(el).attr(CONST.ATTR.ID);
