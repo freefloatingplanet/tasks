@@ -62,8 +62,8 @@ class Task {
 
     create(status){
 
-        this.#task[CONST.TITLE.PLANH] = "0";
-        this.#task[CONST.TITLE.PLANM] = "0";
+        this.#task[CONST.TITLE.PLANH] = "1";
+        this.#task[CONST.TITLE.PLANM] = "60";
         this.#task[CONST.TITLE.SPENT] = "0";
         this.#task[CONST.TITLE.DONERATIO] = 0;
 
