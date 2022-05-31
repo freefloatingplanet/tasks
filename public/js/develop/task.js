@@ -62,8 +62,9 @@ class Task {
 
     create(status){
 
-        this.#task[CONST.TITLE.PLANH] = "1";
-        this.#task[CONST.TITLE.PLANM] = "60";
+        var planh = $('#setting-general-default-planh').val();
+        this.#task[CONST.TITLE.PLANH] = planh;
+        this.#task[CONST.TITLE.PLANM] = planh*60;
         this.#task[CONST.TITLE.SPENT] = "0";
         this.#task[CONST.TITLE.DONERATIO] = 0;
 
