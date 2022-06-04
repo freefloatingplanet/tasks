@@ -206,8 +206,10 @@ var updateKanbanDateArea = function(){
   $('#ktoday').text(moment().format("YYYY-MM-DD"));
   Object.values(CONST.BOARDID).forEach(val => {
     getTasksFromBoardElements(KanbanTest.getBoardElements(val)).forEach(task => {
-      sumPlanTime += Number($(task).attr(CONST.ATTR.PLANM));
-      sumSpentTime += Number($(task).attr(CONST.ATTR.SPENT));
+      if(moment().isSame($(task).attr(CONST.ATTR.DATE),'day')){
+        sumPlanTime += Number($(task).attr(CONST.ATTR.PLANM));
+        sumSpentTime += Number($(task).attr(CONST.ATTR.SPENT));  
+      }
     });
   });
 
