@@ -113,7 +113,7 @@ var KanbanTest = new jKanban({
 
 var createTask = function(boardId, title){
   var status = CONST.BOARDID_TO_TASK[boardId];
-  var nextid = getAllElementCount()-1;
+  var nextid = getAllElementCount()+1;
   var offset = CONST.OFFSET.DEFAULT;
   var t = new Task(title);
   t.create(status);
