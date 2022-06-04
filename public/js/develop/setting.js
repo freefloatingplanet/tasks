@@ -61,7 +61,7 @@ var testFetchRedmine = function(callback){
     json['query'] = settingData['setting-redmine-child-query'];
     json['setting'] = settingData;
     try{
-        JSON.parse(json.query);
+        JSON.parse(json.query.value);
     }catch(e){
         alert(e);
         return false;
