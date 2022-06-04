@@ -25,6 +25,10 @@ class Task {
         this.#task[CONST.TITLE.TITLE] = title;
     }
 
+    getTitle(){
+        return this.#task[CONST.TITLE.TITLE];
+    }
+
     setId(id){
         this.#task[CONST.TITLE.ID] = id;
     }
