@@ -174,7 +174,7 @@ var dropTask = function(el){
       t.updateSpentTime();
     }
     var json = t.getTask();
-    $(el).attr(CONST.ATTR.STATUS,json[CONST.TITLE.START]);
+    $(el).attr(CONST.ATTR.STATUS,json[CONST.TITLE.STATUS]);
     $(el).attr(CONST.ATTR.DATE,json[CONST.TITLE.DATE]);
     $(el).attr(CONST.ATTR.START,json[CONST.TITLE.START]);
     $(el).attr(CONST.ATTR.END,json[CONST.TITLE.END]);
@@ -202,18 +202,23 @@ var createRepeatKanbanTask = function(json){
 var updateKanbanDateArea = function(){
   var sumPlanTime = 0;
   var sumSpentTime = 0;
+  var sumDoneTime = 0;
 
   $('#ktoday').text(moment().format("YYYY-MM-DD"));
   Object.values(CONST.BOARDID).forEach(val => {
     getTasksFromBoardElements(KanbanTest.getBoardElements(val)).forEach(task => {
       if(moment().isSame($(task).attr(CONST.ATTR.DATE),'day')){
         sumPlanTime += Number($(task).attr(CONST.ATTR.PLANM));
-        sumSpentTime += Number($(task).attr(CONST.ATTR.SPENT));  
+        sumSpentTime += Number($(task).attr(CONST.ATTR.SPENT));
+        if($(task).attr(CONST.ATTR.STATUS) === CONST.TASK_STATUS.DONE){
+          sumDoneTime = Number($(task).attr(CONST.ATTR.PLANM));
+        }
       }
     });
   });
 
   $('#kplantime').text((sumPlanTime/60).toFixed(1));
+  $('#kdonetime').text((sumDoneTime/60).toFixed(1));
   $('#kspenttime').text((sumSpentTime/60).toFixed(1));
 
 

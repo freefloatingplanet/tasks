@@ -134,6 +134,7 @@ var updateDateArea = function(){
   var format = 'YYYY-MM-DD';
   var todaycal = moment(date, format).format(`${format} 00:00:00`);
   var sumPlanTime = 0;
+  var sumDoneTime = 0;
   var sumSpentTime = 0;
 
   for(var y=0;y<table.getColumnData(CONST.CELL_NO.ID).length;y++){
@@ -142,11 +143,15 @@ var updateDateArea = function(){
     if(todaycal === date){
       sumPlanTime += Number(table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.PLANM,y])));
       sumSpentTime += Number(table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.SPENT,y])));
+      if(table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.STATUS,y])) === CONST.TASK_STATUS.DONE){
+        sumDoneTime += Number(table.getValue(jexcel.getColumnNameFromId([CONST.CELL_NO.PLANM,y])));
+      }
     }
   }
 
   // 日付領域の更新
   $('#plantime').text((sumPlanTime/60).toFixed(1));
+  $('#donetime').text((sumDoneTime/60).toFixed(1));
   $('#spenttime').text((sumSpentTime/60).toFixed(1));
 }
 
