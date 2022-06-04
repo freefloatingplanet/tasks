@@ -635,7 +635,7 @@ var dragula = require('dragula');
                   customItemLayout = '';
               }
 
-              result = '<table style="width:100%; table-layout: fixed;"><tbody><tr><td style="width:20pt;"><span class=\'item_handle ' + customCssHandler + '\'><i class=\'item_handle ' + customCssIconHandler + '\'></i></span></td><td style="width:90%;overflow-wrap : break-word;"><span>'+headerdiv + result + '</span></td><td style="width:15pt;" class="editbtn"><i class="fa-solid fa-pencil"></i></td><td style="width:15pt;" class="finishbtn"><i class="fa-solid fa-check"></i></td><td style="width:15pt;" class="deletebtn"><i class="fa-solid fa-xmark"></i></td></tr></tbody></table>';
+              result = '<table style="width:100%; table-layout: fixed;"><tbody><tr><td style="width:20pt;"><span class=\'item_handle ' + customCssHandler + '\'><i class=\'item_handle ' + customCssIconHandler + '\'></i></span></td><td style="width:90%;overflow-wrap : break-word;"><span>'+headerdiv + result + '</span></td><td style="width:15pt;" class="finishbtn"><i class="fa-solid fa-check"></i></td><td style="width:15pt;" class="editbtn"><i class="fa-solid fa-pencil"></i></td><td style="width:15pt;" class="deletebtn"><i class="fa-solid fa-xmark"></i></td></tr></tbody></table>';
           } else {
               result = '<div> ' + self.options.itemHandleOptions.customHandler.replace(/%([^%]+)%/g, function (match, key) 
                       { return item[key] !== undefined ? item[key] : '' }) + ' </div>'
