@@ -211,7 +211,7 @@ var updateKanbanDateArea = function(){
         sumPlanTime += Number($(task).attr(CONST.ATTR.PLANM));
         sumSpentTime += Number($(task).attr(CONST.ATTR.SPENT));
         if($(task).attr(CONST.ATTR.STATUS) === CONST.TASK_STATUS.DONE){
-          sumDoneTime = Number($(task).attr(CONST.ATTR.PLANM));
+          sumDoneTime += Number($(task).attr(CONST.ATTR.PLANM));
         }
       }
     });
