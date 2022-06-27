@@ -92,14 +92,15 @@ redmineWrapper.createTimeEntry = (createJson) => {
 redmineWrapper.updateIssue = (updateJson) => {
   return new Promise((resolve, reject) => {
     
-    var json = {
-      "status_id": updateJson.status_id,
-      "done_ratio": updateJson.done_ratio
-    };
+    var json = {};
+
+    if(updateJson.status_id) json["status_id"] = updateJson.status_id;
+    if(updateJson.done_ratio) json["done_ratio"] = updateJson.done_ratio;
+
     var setting_done = updateJson.setting['setting-redmine-child-issue-done'];
     var setting_working = updateJson.setting['setting-redmine-child-issue-working'];
-    if(json.done_ratio == 100 && setting_done) json['status_id'] = setting_done;
-    else if(json.done_ratio == 0 && setting_working) json['status_id'] = setting_working;
+    if(json.done_ratio && json.done_ratio == 100 && setting_done) json['status_id'] = setting_done;
+    else if(json.done_ratio && json.done_ratio == 0 && setting_working) json['status_id'] = setting_working;
 
     var redmine = redmineApiBase(updateJson.setting);
     redmine.update_issue(
